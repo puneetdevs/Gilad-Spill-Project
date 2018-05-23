@@ -280,7 +280,6 @@ function STZ_spilltable_shortcode($atts)
         $btn_secondary_font = get_post_meta($table_id, 'btn_secondary_font', true);
         $btn_secondary_font = ' font-size:'. $btn_secondary_font .'px;' ;
     }
-
         
     if (get_post_meta($table_id, 'btn_view_more_txt_color', true)) {
         $btn_view_more_txt_color = get_post_meta($table_id, 'btn_view_more_txt_color', true);
@@ -316,299 +315,285 @@ function STZ_spilltable_shortcode($atts)
     if (is_array($attached)) {
         ?>
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-        <style>
+        <style>            
+        <?php 
             /* Dynamic Table CSS */
-            <?php echo "#spill-table-". $table_id . " .tr-row:hover {" . $head_bg_hover_color ."}" ?>
-            <?php echo "#spill-table-". $table_id . " .tr-table:hover {" . $content_bg_hover_color ."}" ?>
-            <?php echo "#spill-table-". $table_id . " .primary_btn:hover {" . $btn_primary_hover_txt_color . $btn_primary_hover_color ."}" ?>
-            <?php echo "#spill-table-". $table_id . " .secondary_btn:hover {" . $btn_secondary_hover_txt_color . $btn_secondary_hover_color ."}" ?>
-            <?php echo "#spill-table-". $table_id . " .more_button:hover {" . $btn_view_more_secondary_hover_txt_color . $btn_view_more_secondary_hover_color ."}" ?>
-            <?php 
+            echo "#spill-table-". $table_id . " .tr-row:hover {" . $head_bg_hover_color ."}";
+            echo "#spill-table-". $table_id . " .tr-table:hover {" . $content_bg_hover_color ."}";
+            echo "#spill-table-". $table_id . " .primary_btn:hover {" . $btn_primary_hover_txt_color . $btn_primary_hover_color ."}";
+            echo "#spill-table-". $table_id . " .secondary_btn:hover {" . $btn_secondary_hover_txt_color . $btn_secondary_hover_color ."}";
+            echo "#spill-table-". $table_id . " .more_button:hover {" . $btn_view_more_secondary_hover_txt_color . $btn_view_more_secondary_hover_color ."}";
             $sm_button_hover_color = (trim($sm_button_hover_color!=''))? ' background-color: '.$sm_button_hover_color. ' !important' : ' background-color : #000000 !important';
-            
-        $sm_bg_hover_color = (trim($sm_bg_hover_color!=''))? ' background-color: '.$sm_bg_hover_color. ' !important' : ' background-color : #dedede !important';
-
-        echo "#spill-table-" . $table_id . " .toggle_rows:hover { ". $sm_bg_hover_color . $sm_button_hover_color ." } "; ?>
-
+            $sm_bg_hover_color = (trim($sm_bg_hover_color!=''))? ' background-color: '.$sm_bg_hover_color. ' !important' : ' background-color : #dedede !important';
+            echo "#spill-table-" . $table_id . " .toggle_rows:hover { ". $sm_bg_hover_color . $sm_button_hover_color ." } "; 
+        ?>
         </style>
         <div class="spill-table" id="spill-table-<?php echo $table_id; ?>">
             <table cellspacing="0" cellpadding="0" style="<?php echo ' border-collapse: separate;border-spacing: 0 '.$os_gap_rows.'px;border: none;'  ?>">
                 <thead>                        
                 </thead>                
-                    <?php 
+                <?php 
+                $sm_more_text = (trim($sm_more_text)!='')?$sm_more_text:'Load More';
+                $sm_less_text = (trim($sm_less_text)!='')?$sm_less_text:'Load Less';
                     
-                    $sm_more_text = (trim($sm_more_text)!='')?$sm_more_text:'Load More';
-        $sm_less_text = (trim($sm_less_text)!='')?$sm_less_text:'Load Less';
-                    
-        $sm_bg_color = '';
-        $sm_button_color = '';
-        $sm_button_font = '';
-        $sm_bg_hover_color = '';
-        $sm_button_hover_color = '';
+                $sm_bg_color = '';
+                $sm_button_color = '';
+                $sm_button_font = '';
+                $sm_bg_hover_color = '';
+                $sm_button_hover_color = '';
 
-        $hide_rows = '';
-        $display_button='';
-        $show_more_button = false;
-        if ($sm_rows) {
-            $hide_rows = 'hide_rows';
-            $display_button = '<tbody class="hide_show_rows" style="' . $sm_button_color . $sm_bg_color .  $sm_button_font . '"> <tr> <td colspan="4"> <button class="toggle_rows">'. $sm_more_text . '</button> </td> </tr> </tbody>';
-        }
+                $hide_rows = '';
+                $display_button='';
+                $show_more_button = false;
 
-        /** COUNTER FOR DISPALY ROWS AND COUNTER */
-        $count_entries = 1;
+                if ($sm_rows) {
+                    $hide_rows = 'hide_rows';
+                    $display_button = '<tbody class="hide_show_rows" style="' . $sm_button_color . $sm_bg_color .  $sm_button_font . '"> <tr> <td colspan="4"> <button class="toggle_rows">'. $sm_more_text . '</button> </td> </tr> </tbody>';
+                }
 
-        foreach ($attached as $attached_post) {
-            $entry_post = get_post($attached_post);
+                /** COUNTER FOR DISPALY ROWS AND COUNTER */
+                $count_entries = 1;
 
-            if ($entry_post->post_status=='publish') {
-                $entry_meta = get_post_meta($entry_post->ID);
+                foreach ($attached as $attached_post) {
+                    $entry_post = get_post($attached_post);
 
-
-                //echo '<pre>' ; print_r($entry_post);die();
-                //echo '<pre>' ; print_r($entry_meta);echo'</pre>';
-                //echo '<pre>' ; print_r(get_post_meta($entry_post->ID, 'icons', true)); echo'</pre>';
-                            
-                $bounses = get_post_meta($entry_post->ID, 'bonus', true);
-                $texts   = get_post_meta($entry_post->ID, 'text', true);
-                $lists   = get_post_meta($entry_post->ID, 'list', true);
-                $bools   = get_post_meta($entry_post->ID, 'bool', true);
+                    if ($entry_post->post_status=='publish') {
+                        $entry_meta = get_post_meta($entry_post->ID);
+                        //echo '<pre>' ; print_r($entry_post);die();
+                        //echo '<pre>' ; print_r($entry_meta);echo'</pre>';
+                        //echo '<pre>' ; print_r(get_post_meta($entry_post->ID, 'icons', true)); echo'</pre>';
+                        
+                        $bounses = get_post_meta($entry_post->ID, 'bonus', true);
+                        $texts   = get_post_meta($entry_post->ID, 'text', true);
+                        $lists   = get_post_meta($entry_post->ID, 'list', true);
+                        $bools   = get_post_meta($entry_post->ID, 'bool', true);
                                         
-                $primary_button_text = get_post_meta($entry_post->ID, 'primary_button_text', true);
-                if (!$primary_button_text) {
-                    $primary_button_text = 'Play Right Now';
-                }
+                        $primary_button_text = get_post_meta($entry_post->ID, 'primary_button_text', true);
+
+                        if (!$primary_button_text) {
+                            $primary_button_text = 'Play Right Now';
+                        }
                                         
-                $primary_button_link = get_post_meta($entry_post->ID, 'primary_button_link', true);
-                if (!$primary_button_link) {
-                    $primary_button_link = '#';
-                }
+                        $primary_button_link = get_post_meta($entry_post->ID, 'primary_button_link', true);
+                        if (!$primary_button_link) {
+                            $primary_button_link = '#';
+                        }
 
-                $primary_button_link_target = get_post_meta($entry_post->ID, 'primary_button_link_target', true);
-                $primary_link_target = '_self';
-                if ($primary_button_link_target[0]=='on') {
-                    $primary_link_target = '_blank';
-                }
+                        $primary_button_link_target = get_post_meta($entry_post->ID, 'primary_button_link_target', true);
+                        $primary_link_target = '_self';
+                        if ($primary_button_link_target[0]=='on') {
+                            $primary_link_target = '_blank';
+                        }
 
-                $secondary_button_text = get_post_meta($entry_post->ID, 'secondary_button_text', true);
-                if (!$secondary_button_text) {
-                    $secondary_button_text = 'Read Review';
-                }
+                        $secondary_button_text = get_post_meta($entry_post->ID, 'secondary_button_text', true);
+                        if (!$secondary_button_text) {
+                            $secondary_button_text = 'Read Review';
+                        }
 
-                $secondary_button_link = get_post_meta($entry_post->ID, 'secondary_button_link', true);
-                if (!$secondary_button_link) {
-                    $secondary_button_link = '#';
-                }
+                        $secondary_button_link = get_post_meta($entry_post->ID, 'secondary_button_link', true);
+                        if (!$secondary_button_link) {
+                            $secondary_button_link = '#';
+                        }
 
-                $secondary_button_link_target = get_post_meta($entry_post->ID, 'secondary_button_link_target', true);
-                $secondary_link_target = '_self';
-                if ($secondary_button_link_target[0]=='on') {
-                    $secondary_link_target = '_blank';
-                }
-                                                        
-                $additional_text = get_post_meta($entry_post->ID, 'additional_text', true);
-                if (trim($additional_text)=='') {
-                    $additional_text='View More';
-                } ?>
-                            <tbody class="dropdown dropdown-processed <?php if ($count_entries>$sm_rows) {
-                    echo $hide_rows;
-                    $show_more_button=true;
-                } ?>" style="<?php echo $content_shadow; ?>">
-                            <tr class="tr-row" style="<?php echo $header_text_color . $header_font_family . $header_font_size . $header_bg_color; ?>">
-                                <td width="20%"> 
-                                <div class="left_col1">
-                                    <?php 
-                                    if ($header_counter_or_image=='number') {
-                                        echo '<div class="counter">'.$count_entries."</div>";
+                        $secondary_button_link_target = get_post_meta($entry_post->ID, 'secondary_button_link_target', true);
+                        $secondary_link_target = '_self';
+                        if ($secondary_button_link_target[0]=='on') {
+                            $secondary_link_target = '_blank';
+                        }
+                                                                
+                        $additional_text = get_post_meta($entry_post->ID, 'additional_text', true);
+                        if (trim($additional_text)=='') {
+                            $additional_text='View More';
+                        }
+                    ?>
+                <tbody class="dropdown dropdown-processed <?php if ($count_entries>$sm_rows) { echo $hide_rows; $show_more_button=true; } ?>" style="<?php echo $content_shadow; ?>">
+                    <tr class="tr-row" style="<?php echo $header_text_color . $header_font_family . $header_font_size . $header_bg_color; ?>">
+                        <td width="20%"> 
+                            <div class="left_col1">
+                                <?php  if ($header_counter_or_image=='number') {
+                                    echo '<div class="counter">'.$count_entries."</div>";
+                                } else {
+                                    echo '<i class="fa fa-star"></i> ';
+                                } ?>
+                            </div>                                    
+                            <div class="spill_logo">
+                                <?php if (get_post_meta($entry_post->ID, 'logo', true)) : ?>
+                                <img class="spill-table-logo" src="<?php echo get_post_meta($entry_post->ID, 'logo', true); ?>">
+                                <?php endif; ?>
+                            </div>
+                        </td>
+                        <td width="20%">
+                            <div class="left_col1"> 
+                            <?php echo $entry_post->post_title; ?>
+                            </div>
+                            <div class="tooltip tooltip02"><i class="fa fa-gift"></i>
+                                <div class="tooltiptext">Exclusive Bonus</div>
+                            </div>
+                        </td>                                
+                        <td width="25%" align="center">  
+                            <div class="left_col1 vote_col3"> 
+                                <?php 
+                                if (!empty($bounses)) {
+                                    foreach ($bounses as $bonus) {
+                                        if ('no_deposit_bonus' === $bonus['type']) {
+                                            echo ' NO Deposit Bonus-' . $bonus['amount'] ;
+                                        } elseif ('first_deposit_bonus' === $bonus['type']) {
+                                            echo ' First Deposit Bonus '. $bonus['amount'];
+                                        } elseif ('free_spins_bonus' === $bonus['type']) {
+                                            echo ' Free Spins Bonus '. $bonus['amount'];
+                                        } elseif ('reload_bonus' === $bonus['type']) {
+                                            echo ' Reload Bonus '. $bonus['amount'];
+                                        } elseif ('high_roller_bonus' === $bonus['type']) {
+                                            echo ' High Roller Bonus '. $bonus['amount'];
+                                        } elseif ('vip_bonus' ===$bonus['type']) {
+                                            echo ' VIP Bonus '. $bonus['amount'];
+                                        } else {
+                                            //echo ' '. $bonus['amount'];
+                                        }
+                                        echo '<br/>';
+                                    }
+                                } ?>
+                            </div>                                    
+                            <div class="vote_col vote_col1">                                        
+                                <?php 
+                                $show_rating_in = get_post_meta($entry_post->ID, 'show_rating_in', true);
+                                if ($show_rating_in=='stars') {
+                                    $rating_float = get_post_meta($entry_post->ID, 'rating_float', true);
+                                    if ($rating_float) {
+                                        echo "<ul class='review_rating'>";
+                                        for ($i=$rating_float;$i>0;$i--) {
+                                            echo '<li><i class="fa fa-star"></i></li>';
+                                        }
+                                        echo "</ul>";
+                                    }
+                                } else if ($show_rating_in=='integer') {
+                                    $rating_integer = get_post_meta($entry_post->ID, 'rating_integer', true);
+                                    if ($rating_integer) {
+                                        echo '<span class="rating_intger">' . $rating_integer . '</span>';
                                     } else {
-                                        echo '<i class="fa fa-star"></i> ';
-                                    } ?></div>
-                                    
-                                    <div class="spill_logo">
-                                        <?php if (get_post_meta($entry_post->ID, 'logo', true)) : ?>
-                                        <img class="spill-table-logo" src="<?php echo get_post_meta($entry_post->ID, 'logo', true); ?>">
-                                    <?php endif; ?>
-                                    </div>
-                                </td>
-                                
-                               
-                                <td width="20%">
-                                    <div class="left_col1"> 
-                                    <?php echo $entry_post->post_title; ?>
-                                    </div>
-                                    <div class="tooltip tooltip02"><i class="fa fa-gift"></i>
-                                        <div class="tooltiptext">Exclusive Bonus</div>
-                                    </div>
-                                </td>
-                                
-                                <td width="25%" align="center">  
-                                    <div class="left_col1 vote_col3"> 
-                                        <?php 
-                                        if (!empty($bounses)) {
-                                            foreach ($bounses as $bonus) {
-                                                if ('no_deposit_bonus' === $bonus['type']) {
-                                                    echo ' NO Deposit Bonus-' . $bonus['amount'] ;
-                                                } elseif ('first_deposit_bonus' === $bonus['type']) {
-                                                    echo ' First Deposit Bonus '. $bonus['amount'];
-                                                } elseif ('free_spins_bonus' === $bonus['type']) {
-                                                    echo ' Free Spins Bonus '. $bonus['amount'];
-                                                } elseif ('reload_bonus' === $bonus['type']) {
-                                                    echo ' Reload Bonus '. $bonus['amount'];
-                                                } elseif ('high_roller_bonus' === $bonus['type']) {
-                                                    echo ' High Roller Bonus '. $bonus['amount'];
-                                                } elseif ('vip_bonus' ===$bonus['type']) {
-                                                    echo ' VIP Bonus '. $bonus['amount'];
-                                                } else {
-                                                    //echo ' '. $bonus['amount'];
-                                                }
-                                                echo '<br/>';
-                                            }
-                                        } ?>
-                                    </div>                                    
-                                    <div class="vote_col vote_col1">                                        
-                                        <?php 
-                                        $show_rating_in = get_post_meta($entry_post->ID, 'show_rating_in', true);
+                                        echo '<span style="width:0%;background-color: #5bac5d;"></span>';
+                                    }
+                                } else {
+                                    $total_ratings = 0;
+                                    $total_ratings = $total_ratings + get_post_meta($entry_post->ID, 'total_rating', true);
+                                    $get_old_ratings = get_post_meta($entry_post->ID, 'rating_readonly', true);
+                                    if ($get_old_ratings) {
+                                        $rating=0;
+                                        if ($total_ratings>0) {
+                                            $rating = $rating + round(($get_old_ratings/$total_ratings), 2);
+                                        }
+                                        echo '<span>'.$rating.'<small>/ '.$total_ratings.' votes</small></span>';
+                                    }
 
-                if ($show_rating_in=='stars') {
-                    $rating_float = get_post_meta($entry_post->ID, 'rating_float', true);
-                    if ($rating_float) {
-                        echo "<ul class='review_rating'>";
-                        for ($i=$rating_float;$i>0;$i--) {
-                            echo '<li><i class="fa fa-star"></i></li>';
-                        }
-                        echo "</ul>";
-                    }
-                } elseif ($show_rating_in=='integer') {
-                    $rating_integer = get_post_meta($entry_post->ID, 'rating_integer', true);
-                    if ($rating_integer) {
-                        echo '<span class="rating_intger">' . $rating_integer . '</span>';
-                    } else {
-                        echo '<span style="width:0%;background-color: #5bac5d;"></span>';
-                    }
-                } else {
-                    $total_ratings = 0;
-                    $total_ratings = $total_ratings + get_post_meta($entry_post->ID, 'total_rating', true);
-                    $get_old_ratings = get_post_meta($entry_post->ID, 'rating_readonly', true);
-                    if ($get_old_ratings) {
-                        $rating=0;
-                        if ($total_ratings>0) {
-                            $rating = $rating + round(($get_old_ratings/$total_ratings), 2);
-                        }
-                        echo '<span>'.$rating.'<small>/ '.$total_ratings.' votes</small></span>';
-                    } ?>
-                                            <div class="vote_box">
-                                            <?php
-                                                $rating_percents = get_post_meta($entry_post->ID, 'rating_percents', true);
-                    if ($rating_percents) {
-                        echo '<span style="width: '.$rating_percents.'%;background-color: #5bac5d;"></span>';
-                    } else {
-                        echo '<span style="width:0%;background-color: #5bac5d;"></span>';
-                    } ?>
-                                            </div>
-                                            <?php
-                } ?>
-                                    </div>
-                                </td>
-                                <!-- 
-                                    <td align="center">
-                                        <h6>20xB</h6><small>min WR</small>
-                                    </td>                                     
-                                -->
-                                <td width="30%">
-                                    <a href="<?php echo $primary_button_link; ?>" class="claim_button primary_btn" target="<?php echo $primary_link_target; ?>" style="<?php echo $btn_primary_txt_color . $btn_primary_color .$btn_primary_font; ?>"> <?php echo $primary_button_text; ?> </a>
-                                    <a href="#" class="more_button dropdown-link" style="<?php echo $btn_view_more_txt_color . $btn_view_more_color .$btn_view_more_font; ?>" ><?php echo $additional_text; ?> <i class="fa fa-plus"></i></a>
-                                </td>
-                            </tr>
-                            <tr class="dropdown-container" style="<?php echo $content_text_color . $content_font_family . $content_font_style. $content_font_size ; ?> display: none; ">
-                                <td colspan="4">
-                                    <table class="row-table" cellpadding="0" cellspacing="0" >
-                                        <tr>
-                                            <td width="50%">
-                                                <div class="sub_table">
-                                                    <div class="sub_table_top" style="<?php echo $content_bg_row_color; ?>">
-                                                        <div class="tooltip pull-right">
-                                                            <i class="fa fa-exclamation-circle"></i> 
-                                                            <span class="tooltiptext">More Information</span>
-                                                        </div>
-                                                        <?php 
-                                                        if (!empty($bounses)) {
-                                                            echo '<div class="bonuses_group">';
-                                                            foreach ($bounses as $bonus) {
-                                                                if ('no_deposit_bonus' === $bonus['type']) {
-                                                                    echo '<div class="bonus_row"> <strong>'. $bonus['amount'] .'</strong> NO Deposit Bonus  </div>';
-                                                                } elseif ('first_deposit_bonus' === $bonus['type']) {
-                                                                    echo ' <div class="bonus_row"><strong>'. $bonus['amount'] .'</strong> First Deposit Bonus </div>';
-                                                                } elseif ('free_spins_bonus' === $bonus['type']) {
-                                                                    echo ' <div class="bonus_row"><strong>'. $bonus['amount'] .'</strong> Free Spins Bonus </div>';
-                                                                } elseif ('reload_bonus' === $bonus['type']) {
-                                                                    echo ' <div class="bonus_row"><strong>'. $bonus['amount'] .'</strong> Reload Bonus </div>';
-                                                                } elseif ('high_roller_bonus' === $bonus['type']) {
-                                                                    echo ' <div class="bonus_row"> <strong>'. $bonus['amount'] .'</strong> High Roller Bonus </div>';
-                                                                } elseif ('vip_bonus' ===$bonus['type']) {
-                                                                    echo ' <div class="bonus_row"><strong>'. $bonus['amount'] .'</strong> VIP Bonus</div>';
-                                                                } else {
-                                                                    //echo ' '. '<h1><em>$</em>'.$bonus['amount'].'</h1>';;
-                                                                }
-                                                            }
-                                                            echo '</div>';
-                                                        } ?>                                                        
-                                                    </div>
-                                                    <div class="entry-details">Details</div>
-                                                    <?php 
-                                                    if (!empty($texts)) {
-                                                        echo '<div class="text_group">';
-                                                        foreach ($texts as $text) {
-                                                            echo '<div class="text_row">
-                                                                <div class="text_title">'.$text['title'].' </div> 
-                                                                <div class="text_details">'.$text['text_content'].' </div>
-                                                                <div class="text_highlight">'.$text['text_highlight'].'</div>
-                                                            </div>';
+                                    $rating_percents = get_post_meta($entry_post->ID, 'rating_percents', true);
+                                    echo '<div class="vote_box">';
+                                        if ($rating_percents) {
+                                            echo '<span style="width: '.$rating_percents.'%;background-color: #5bac5d;"></span>';
+                                        } else {
+                                            echo '<span style="width:0%;background-color: #5bac5d;"></span>';
+                                        } 
+                                    echo '</div>';
+                                } ?>
+                            </div>
+                        </td>
+                        <!-- 
+                        <td align="center">
+                            <h6>20xB</h6><small>min WR</small>
+                        </td>                                     
+                        -->
+                        <td width="30%">
+                            <a href="<?php echo $primary_button_link; ?>" class="claim_button primary_btn" target="<?php echo $primary_link_target; ?>" style="<?php echo $btn_primary_txt_color . $btn_primary_color .$btn_primary_font; ?>"> <?php echo $primary_button_text; ?> </a>
+                            <a href="#" class="more_button dropdown-link" style="<?php echo $btn_view_more_txt_color . $btn_view_more_color .$btn_view_more_font; ?>" ><?php echo $additional_text; ?> <i class="fa fa-plus"></i></a>
+                        </td>
+                    </tr>
+                    <tr class="dropdown-container" style="<?php echo $content_text_color . $content_font_family . $content_font_style. $content_font_size ; ?> display: none; ">
+                        <td colspan="4">
+                            <table class="row-table" cellpadding="0" cellspacing="0" >
+                                <tr>
+                                    <td width="50%">
+                                        <div class="sub_table">
+                                            <div class="sub_table_top" style="<?php echo $content_bg_row_color; ?>">
+                                                <div class="tooltip pull-right">
+                                                    <i class="fa fa-exclamation-circle"></i> 
+                                                    <span class="tooltiptext">More Information</span>
+                                                </div>
+                                                <?php 
+                                                if (!empty($bounses)) {
+                                                    echo '<div class="bonuses_group">';
+                                                    foreach ($bounses as $bonus) {
+                                                        if ('no_deposit_bonus' === $bonus['type']) {
+                                                            echo '<div class="bonus_row"> <strong>'. $bonus['amount'] .'</strong> NO Deposit Bonus  </div>';
+                                                        } elseif ('first_deposit_bonus' === $bonus['type']) {
+                                                            echo ' <div class="bonus_row"><strong>'. $bonus['amount'] .'</strong> First Deposit Bonus </div>';
+                                                        } elseif ('free_spins_bonus' === $bonus['type']) {
+                                                            echo ' <div class="bonus_row"><strong>'. $bonus['amount'] .'</strong> Free Spins Bonus </div>';
+                                                        } elseif ('reload_bonus' === $bonus['type']) {
+                                                            echo ' <div class="bonus_row"><strong>'. $bonus['amount'] .'</strong> Reload Bonus </div>';
+                                                        } elseif ('high_roller_bonus' === $bonus['type']) {
+                                                            echo ' <div class="bonus_row"> <strong>'. $bonus['amount'] .'</strong> High Roller Bonus </div>';
+                                                        } elseif ('vip_bonus' ===$bonus['type']) {
+                                                            echo ' <div class="bonus_row"><strong>'. $bonus['amount'] .'</strong> VIP Bonus</div>';
+                                                        } else {
+                                                            //echo ' '. '<h1><em>$</em>'.$bonus['amount'].'</h1>';;
                                                         }
-                                                        echo '</div>';
                                                     }
+                                                    echo '</div>';
+                                                } ?>                                                        
+                                            </div>
+                                            <div class="entry-details">Details</div>
+                                            <?php 
+                                            if (!empty($texts)) {
+                                                echo '<div class="text_group">';
+                                                foreach ($texts as $text) {
+                                                    echo '<div class="text_row">
+                                                        <div class="text_title">'.$text['title'].' </div> 
+                                                        <div class="text_details">'.$text['text_content'].' </div>
+                                                        <div class="text_highlight">'.$text['text_highlight'].'</div>
+                                                    </div>';
+                                                }
+                                                echo '</div>';
+                                            }
 
-                if (!empty($bools)) {
-                    echo '<div class="true_false">';
-                    foreach ($bools as $bool) {
-                        if ($bool['bool_value']=='true') {
-                            $fa = ' <i class="fa fa-check"></i>';
-                        } else {
-                            $fa = ' <i class="fa fa-times"></i>';
-                        }
-                        echo '<div class="true_false_row">'.  $fa . $bool['title']. '</div>';
-                    }
-                    echo '</div>';
-                }
+                                            if (!empty($bools)) {
+                                                echo '<div class="true_false">';
+                                                foreach ($bools as $bool) {
+                                                    if ($bool['bool_value']=='true') {
+                                                        $fa = ' <i class="fa fa-check"></i>';
+                                                    } else {
+                                                        $fa = ' <i class="fa fa-times"></i>';
+                                                    }
+                                                    echo '<div class="true_false_row">'.  $fa . $bool['title']. '</div>';
+                                                }
+                                                echo '</div>';
+                                            }
 
-                if (!empty($lists)) {
-                    echo '<div class="lists_group">';
-                    foreach ($lists as $list) {
-                        if (!empty($list['items'])) {
-                            echo '<div class="list-child">
-                                                                    <div class="list-title"> '.$list['title']. ' </div>
-                                                                        <div class="list_items">';
-                            foreach ($list['items'] as $list_item) {
-                                echo '<div class="list_item">'.$list_item.'</div>';
-                            }
-                            echo '  </div>
-                                                                    </div>';
-                        }
-                    }
-                    echo '</div>';
-                }
-                if (get_post_meta($entry_post->ID, 'description', true)) {
-                    echo '<div class="detail-entry-desc">'. get_post_meta($entry_post->ID, 'description', true).'</div>';
-                }
-                /*
-                    $rating_float = get_post_meta($entry_post->ID, 'rating_float', true);
-                    if($rating_float){
-                        //echo '<p>Rating Float: <strong>'.$rating_float.'</strong></p>';
-                        echo "<ul class='review_rating'>";
-                        for($i=$rating_float;$i>0;$i--){
-                            echo '<li><i class="fa fa-star"></li>';
-                        }
-                        echo "</ul>";
-                    }
-                */ ?>
+                                            if (!empty($lists)) {
+                                                echo '<div class="lists_group">';
+                                                foreach ($lists as $list) {
+                                                    if (!empty($list['items'])) {
+                                                        echo '<div class="list-child"> <div class="list-title"> '.$list['title']. ' </div> <div class="list_items">';
+                                                        foreach ($list['items'] as $list_item) {
+                                                            echo '<div class="list_item">'.$list_item.'</div>';
+                                                        }
+                                                        echo '</div> </div>';
+                                                    }
+                                                }
+                                                echo '</div>';
+                                            }
+                                            if (get_post_meta($entry_post->ID, 'description', true)) {
+                                                echo '<div class="detail-entry-desc">'. get_post_meta($entry_post->ID, 'description', true).'</div>';
+                                            }
+                                            /*
+                                                $rating_float = get_post_meta($entry_post->ID, 'rating_float', true);
+                                                if($rating_float){
+                                                    //echo '<p>Rating Float: <strong>'.$rating_float.'</strong></p>';
+                                                    echo "<ul class='review_rating'>";
+                                                    for($i=$rating_float;$i>0;$i--){
+                                                        echo '<li><i class="fa fa-star"></li>';
+                                                    }
+                                                    echo "</ul>";
+                                                }
+                                            */ ?>
                                                 </div>
                                             </td>
                                             <td width="50%">
@@ -616,34 +601,34 @@ function STZ_spilltable_shortcode($atts)
                                                     <div class="sub_table_right_col" >
                                                         <?php 
                                                             $post_stz_payment_methods = get_the_terms($entry_post->ID, 'stz_payment_methods');
-                if (is_array($post_stz_payment_methods)) {
-                    echo '<div class="wagering_size"> <p>Payments</p>';
-                    foreach ($post_stz_payment_methods as $payment_method) {
-                        $logo = get_term_meta($payment_method->term_id, 'STZ_logo', true);
-                        echo '<img src="'.$logo.'">';
-                    }
-                    echo ' </div>';
-                } ?>
-                                                        <?php 
-                                                            $post_stz_softwares = get_the_terms($entry_post->ID, 'stz_software');
-                if (is_array($post_stz_softwares)) {
-                    echo '<div class="wagering_size"> <p>Softwares</p>';
-                    foreach ($post_stz_softwares as $payment_method) {
-                        $logo = get_term_meta($payment_method->term_id, 'STZ_logo', true);
-                        echo '<img src="'.$logo.'">';
-                    }
-                    echo ' </div>';
-                } ?>
-                                                        <?php 
-                                                            $post_stz_devices = get_the_terms($entry_post->ID, 'stz_devices');
-                if (is_array($post_stz_devices)) {
-                    echo '<div class="wagering_size">  <p>Devices</p> ';
-                    foreach ($post_stz_devices as $payment_method) {
-                        $logo = get_term_meta($payment_method->term_id, 'STZ_logo', true);
-                        echo '<img src="'.$logo.'">';
-                    }
-                    echo ' </div>';
-                } ?>
+                                                            if (is_array($post_stz_payment_methods)) {
+                                                                echo '<div class="wagering_size"> <p>Payments</p>';
+                                                                foreach ($post_stz_payment_methods as $payment_method) {
+                                                                    $logo = get_term_meta($payment_method->term_id, 'STZ_logo', true);
+                                                                    echo '<img src="'.$logo.'">';
+                                                                }
+                                                                echo ' </div>';
+                                                            } ?>
+                                                                                                    <?php 
+                                                                                                        $post_stz_softwares = get_the_terms($entry_post->ID, 'stz_software');
+                                                            if (is_array($post_stz_softwares)) {
+                                                                echo '<div class="wagering_size"> <p>Softwares</p>';
+                                                                foreach ($post_stz_softwares as $payment_method) {
+                                                                    $logo = get_term_meta($payment_method->term_id, 'STZ_logo', true);
+                                                                    echo '<img src="'.$logo.'">';
+                                                                }
+                                                                echo ' </div>';
+                                                            } ?>
+                                                                                                    <?php 
+                                                                                                        $post_stz_devices = get_the_terms($entry_post->ID, 'stz_devices');
+                                                            if (is_array($post_stz_devices)) {
+                                                                echo '<div class="wagering_size">  <p>Devices</p> ';
+                                                                foreach ($post_stz_devices as $payment_method) {
+                                                                    $logo = get_term_meta($payment_method->term_id, 'STZ_logo', true);
+                                                                    echo '<img src="'.$logo.'">';
+                                                                }
+                                                                echo ' </div>';
+                                                            } ?>
                                                         <?php 
                                                             // $post_stz_icons = get_the_terms( $entry_post->ID, 'stz_icons' );
                                                             // if(is_array($post_stz_icons)){
@@ -656,91 +641,115 @@ function STZ_spilltable_shortcode($atts)
                                                             // }
                                                         ?>
                                                         <?php 
-                                                            $icons = get_post_meta($entry_post->ID, 'icons', true);
-                if (is_array($icons)) {
-                    $empty_icons = false;
-                    $html_icons = '';
-                    foreach ($icons as $icon) {
-                        if (!empty($icon)) {
-                            $empty_icons = true;
-                            $logo = get_term_meta($icon['icon_id'], 'STZ_logo', true);
-                                                                        
-                            $html_icons .=  '<div class="icon_content icons">';
-                            $html_icons .= ($logo!='')?'<img src="'.$logo.'">':'';
-                            $html_icons .=  ($icon['value']!='')? '<div class="icon-label">'. $icon['value'] . '</div>' : '';
-                            $html_icons .= ($icon['label']!='')? '<div class="icon-desc">' . $icon['label'] . '</div>' : '';
-                            $html_icons .=  '</div>';
-                        }
-                    }
-                    if ($empty_icons) {
-                        echo '<div class="wagering_size">'. $html_icons . ' </div>';
-                    }
-                } ?>
+                                                        $icons = get_post_meta($entry_post->ID, 'icons', true);
+                                                        if (is_array($icons)) {
+                                                            $empty_icons = false;
+                                                            $html_icons = '';
+                                                            foreach ($icons as $icon) {
+                                                                if (!empty($icon)) {
+                                                                    $empty_icons = true;
+                                                                    $logo = get_term_meta($icon['icon_id'], 'STZ_logo', true);
+                                                                                                                
+                                                                    $html_icons .=  '<div class="icon_content icons">';
+                                                                    $html_icons .= ($logo!='')?'<img src="'.$logo.'">':'';
+                                                                    $html_icons .=  ($icon['value']!='')? '<div class="icon-label">'. $icon['value'] . '</div>' : '';
+                                                                    $html_icons .= ($icon['label']!='')? '<div class="icon-desc">' . $icon['label'] . '</div>' : '';
+                                                                    $html_icons .=  '</div>';
+                                                                }
+                                                            }
+                                                            if ($empty_icons) {
+                                                                echo '<div class="wagering_size">'. $html_icons . ' </div>';
+                                                            }
+                                                        } ?>
                                                     </div>
                                                     <center>
                                                     <a href="<?php echo $secondary_button_link; ?>" class="claim_button secondary_btn"   target="<?php echo $secondary_link_target; ?>" style="<?php echo $btn_secondary_txt_color . $btn_secondary_color .$btn_secondary_font; ?>"><?php echo $secondary_button_text; ?> <i class="fa fa-gift"></i></a>
                                                         <div class="w100p pull-left clearfix"></div>
-                                                        <?php if (get_post_meta($entry_post->ID, 'bool_rating', true)==='on') {
-                    ?>
+                                                        <?php if (get_post_meta($entry_post->ID, 'bool_rating', true)==='on') { ?>
                                                             <div class="stars">
                                                                 <div id="rating_<?php echo $entry_post->ID ?>" >
-                                                                    <input class="star star-5" id="star-5" type="radio" name="star" value="5" />
-                                                                    <label class="star star-5" for="star-5"></label>
-                                                                    <input class="star star-4" id="star-4" type="radio" name="star" value="4" />
-                                                                    <label class="star star-4" for="star-4"></label>
-                                                                    <input class="star star-3" id="star-3" type="radio" name="star" value="3" />
-                                                                    <label class="star star-3" for="star-3"></label>
-                                                                    <input class="star star-2" id="star-2" type="radio" name="star" value="2" />
-                                                                    <label class="star star-2" for="star-2"></label>
-                                                                    <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
-                                                                    <label class="star star-1" for="star-1"></label>
-                                                                    <?php if (is_user_logged_in()): ?>                                                               
+                                                                    <input class="star star-5" id="star-5-<?php echo $entry_post->ID ?>" type="radio" name="star" value="5" />
+                                                                    <label class="star star-5" for="star-5-<?php echo $entry_post->ID ?>"></label>
+                                                                    <input class="star star-4" id="star-4-<?php echo $entry_post->ID ?>" type="radio" name="star" value="4" />
+                                                                    <label class="star star-4" for="star-4-<?php echo $entry_post->ID ?>"></label>
+                                                                    <input class="star star-3" id="star-3-<?php echo $entry_post->ID ?>" type="radio" name="star" value="3" />
+                                                                    <label class="star star-3" for="star-3-<?php echo $entry_post->ID ?>"></label>
+                                                                    <input class="star star-2" id="star-2-<?php echo $entry_post->ID ?>" type="radio" name="star" value="2" />
+                                                                    <label class="star star-2" for="star-2-<?php echo $entry_post->ID ?>"></label>
+                                                                    <input class="star star-1" id="star-1-<?php echo $entry_post->ID ?>" type="radio" name="star" value="1"/>
+                                                                    <label class="star star-1" for="star-1-<?php echo $entry_post->ID ?>"></label>                                                                    
+                                                                    <?php if (!is_user_logged_in()): ?>                                                               
                                                                         <div class="user_rating_form_fields">
                                                                             <fieldset>
                                                                                 <legend>Become a member in just 20 seconds</legend>
                                                                                 <input class="form-control" id="spill_name" type="text" name="spill_name" placeholder="Enter Your Name" />
-                                                                                <input class="form-control" id="spill_username" type="email" name="spill_email" placeholder="Enter Your Email" />
+                                                                                <input class="form-control" id="spill_email" type="email" name="spill_email" placeholder="Enter Your Email" />
                                                                                 <input class="form-control" id="spill_password" type="password" name="spill_password" placeholder="Enter Password" />
                                                                                 <label style="float: left;width: 64%;"><input style="width:10%" class="form-control" id="spill_secreat_deals" type="checkbox" name="spill_secreat_deals" /> Send me secret deals</label>
                                                                             </fieldset>
-                                                                        </div>
-                                                                    <?php endif; ?>
-                                                                    <button id="button_<?php echo $entry_post->ID ?>" class="submit_btn">Submit</button>
-                                                                    <span id="rating_msg_<?php echo $entry_post->ID ?>"></span>
-                                                                    <?php if (is_user_logged_in()): ?>
-                                                                        <script type="text/javascript">
-                                                                            jQuery(document).ready(function(){
-                                                                                jQuery("#button_<?php echo $entry_post->ID ?>").on( "click", function(){   
-                                                                                    var radioValue = jQuery("#rating_<?php echo $entry_post->ID ?> input[name='star']:checked").val();
-                                                                                    if(radioValue){
-                                                                                        var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
-                                                                                        var data = {
-                                                                                            'action': 'spill_table_ajax',
-                                                                                            'radioValue': radioValue,
-                                                                                            'stz_entry': '<?php echo $entry_post->ID ?>'
-                                                                                        };
+                                                                        </div>                                                                        
+                                                                    <?php else: ?>
+                                                                        <input type="hidden" name="user_id" value="<?php echo get_current_user_id(); ?>">                                                                        
+                                                                    <?php endif; ?>                                                                    
+                                                                    <span id="rating_msg_<?php echo $entry_post->ID ?>" style="white-space: nowrap;"></span><br>
+                                                                    <button id="button_<?php echo $entry_post->ID ?>" class="submit_btn" style="margin: 10px;">Submit</button>
+                                                                    <script type="text/javascript">
+                                                                        jQuery(document).ready(function() {
+                                                                            jQuery("#button_<?php echo $entry_post->ID ?>").on( "click", function(e) {
+                                                                                e.preventDefault();
+                                                                                var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
+                                                                                var radioValue = jQuery("#rating_<?php echo $entry_post->ID ?> input[name='star']:checked").val();
 
-                                                                                        jQuery.post( ajaxurl, data, 
-                                                                                            function(response) {
-                                                                                                if(response=='1'){
-                                                                                                    jQuery("#button_<?php echo $entry_post->ID ?>").hide();
-                                                                                                    jQuery("#rating_msg_<?php echo $entry_post->ID ?>").text('Thanks for your review');
-                                                                                                }else{
-                                                                                                    jQuery("#button_<?php echo $entry_post->ID ?>").hide();
-                                                                                                    jQuery("#rating_msg_<?php echo $entry_post->ID ?>").text('Please refresh page and try again');
-                                                                                                }
+                                                                                if(radioValue) {
+                                                                                    <?php if (!is_user_logged_in()): ?>
+                                                                                        var spill_name = jQuery("#rating_<?php echo $entry_post->ID ?>  #spill_name").val();
+                                                                                        var spill_email = jQuery("#rating_<?php echo $entry_post->ID ?>  #spill_email").val();
+                                                                                        var spill_password = jQuery("#rating_<?php echo $entry_post->ID ?>  #spill_password").val();
+                                                                                            
+                                                                                        var post_data = {
+                                                                                            action: 'spill_table_ajax',
+                                                                                            radioValue: radioValue,
+                                                                                            submit_type: 'new_user',
+                                                                                            stz_entry: <?php echo $entry_post->ID ?>,
+                                                                                            spill_name: spill_name,
+                                                                                            spill_email: spill_email,
+                                                                                            spill_password: spill_password
+                                                                                        };
+                                                                                            
+                                                                                    <?php else: ?>
+                                                                                        var post_data = {
+                                                                                            action: 'spill_table_ajax',
+                                                                                            submit_type: 'user',
+                                                                                            radioValue: radioValue,
+                                                                                            stz_entry: '<?php echo $entry_post->ID; ?>',
+                                                                                            user_id: '<?php echo get_current_user_id(); ?>'
+                                                                                        };
+                                                                                    <?php endif ;?>
+                                                                                    jQuery.post({
+                                                                                        url: ajaxurl,
+                                                                                        type: 'POST',                                                                                        
+                                                                                        data: post_data,
+                                                                                        dataType: "json",
+                                                                                        success: function(response) {
+                                                                                            if (response.status=='success') {
+                                                                                                jQuery("#button_<?php echo $entry_post->ID ?>").hide();
+                                                                                                jQuery("#rating_msg_<?php echo $entry_post->ID ?>").text(response.message);
+                                                                                            } else {                                                                                                    
+                                                                                                jQuery("#rating_msg_<?php echo $entry_post->ID ?>").text(response.message);
                                                                                             }
-                                                                                        );
-                                                                                        
-                                                                                    }
-                                                                                });
+                                                                                        }
+                                                                                    });
+                                                                                                                                                                    
+                                                                                } else {
+                                                                                    alert('Select start rating first');
+                                                                                }
                                                                             });
-                                                                        </script>
-                                                                    <?php endif; ?>
+                                                                        });
+                                                                    </script>                                                                    
                                                                 </div>
                                                             </div>
                                                         <?php
-                } ?>
+                                                    } ?>
                                                     </center>
                                                 </div>
                                             </td>
