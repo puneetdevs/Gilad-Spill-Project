@@ -727,6 +727,22 @@ ul.review_rating li .fa {
     width: 100%;
 }
 
+.user_rating_form_fields {
+    background: #fff;
+    padding: : 10px;
+}
+
+.user_rating_form_fields input {
+    width: 100%;
+    margin: 5px 0;
+    border: 1px #ccc solid;
+}
+
+.tr-head th {
+    text-align: center;
+    padding: 6px;
+}
+
 @media ( max-width: 991px) {
     .spill-table table tr td,
     .spill-table table tr {

@@ -11,13 +11,13 @@ function spill_table_ajax() {
     } else {
         
         $submit_type = $_POST['submit_type'];
-
+        $spill_name = $_POST['spill_name'];
+        $spill_email = $_POST['spill_email'];
+        $spill_password = $_POST['spill_password'];
+        
         if ($submit_type == 'new_user') {
-            if ($spill_name!='' && $spill_email!='' && $$spill_password!='' ) {
-                $spill_name 		= $_POST['spill_name'];
-                $spill_email 		= $_POST['spill_email'];
-                $spill_password 	= $_POST['spill_password'];
-    
+            if ($spill_name!='' && $spill_email!='' && $spill_password!='' ) {
+                
                 if (false == email_exists($spill_email) && false == username_exists($spill_email)) {
                     $user_id = wp_create_user($spill_name, $spill_password, $spill_email);
                 } else {

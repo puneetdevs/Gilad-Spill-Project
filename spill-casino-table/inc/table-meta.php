@@ -51,7 +51,7 @@ function table_register_meta_boxes()
     // setting tabs
     $tabs_setting = array(
         'config' => $box_options,
-        'layout' => 'horizontal', // OR vertical
+        'layout' => 'vertical', // OR vertical
         'tabs'   => array()
     );
            
@@ -61,32 +61,38 @@ function table_register_meta_boxes()
         'fields' => array()
     );
     
-    $tabs_setting['tabs']['header_settings'] = array(
+    $tabs_setting['tabs']['add_columns'] = array(
         'id'     => 'tab2',
+        'title'  => __('Set Columns', 'cmb2'),
+        'fields' => array()
+    );
+
+    $tabs_setting['tabs']['header_settings'] = array(
+        'id'     => 'tab3',
         'title'  => __('Header Settings', 'cmb2'),
         'fields' => array()
     );
    
     $tabs_setting['tabs']['table_settings'] = array(
-        'id'     => 'tab3',
+        'id'     => 'tab4',
         'title'  => __('Content Settings', 'cmb2'),
         'fields' => array()
     );
 
     $tabs_setting['tabs']['show_more_settings'] = array(
-        'id'     => 'tab4',
+        'id'     => 'tab5',
         'title'  => __('Load More Settings', 'cmb2'),
         'fields' => array()
     );
 
     $tabs_setting['tabs']['button_settings'] = array(
-        'id'     => 'tab5',
+        'id'     => 'tab6',
         'title'  => __('Button Settings', 'cmb2'),
         'fields' => array()
     );
 
     $tabs_setting['tabs']['other_settings'] = array(
-        'id'     => 'tab6',
+        'id'     => 'tab7',
         'title'  => __('Other Settings', 'cmb2'),
         'fields' => array()
     );
@@ -113,6 +119,69 @@ function table_register_meta_boxes()
         ),
     );
    
+   
+    $rows_prefix = 'rows_';
+
+    $tabs_setting['tabs']['add_columns']['fields'][] = array(
+        'id'   => $rows_prefix . 'group',
+        'title'   => 'Columns',
+        'type'    => 'group',
+        'options' => array(
+            'group_title'   => __( 'Table Column {#}' ),
+            'add_button'    => __( 'Add' ),
+            'remove_button' => __( 'Remove' ),
+            'sortable'      => false
+        ),
+        'fields'  => array(
+            array(
+                'name' => __( 'Column title' ),
+                'id'   => 'title',
+                'type' => 'text'
+            ),
+            array(
+                'name'      => __( 'Hide Header' ),
+                'id'        => 'hide',
+                'type'      => 'checkbox',
+                'desc'   => 'check to hide form table',                
+            ),
+            array(
+                'name'      => __( 'Items' ),
+                'id'        => 'type',
+                'type'      => 'select',
+                'default'   => 'none',
+                'options'   => stz_columns_list()
+            ),
+            array(
+                'name' => esc_html__('Content font', 'cmb2'),
+                'id'   => 'font_family',
+                'type'             => 'select',
+                'show_option_none' => true,
+                //'default'        => 'None',
+                'options'          => array(
+                    'Roboto'    => __('Roboto', 'cmb2'),
+                    'Work+Sans' => __('Work Sans', 'cmb2'),
+                    'PT+Sans'   => __('PT Sans', 'cmb2'),
+                    'Lato'      => __('Lato', 'cmb2'),
+                    'Open+Sans' => __('Open Sans', 'cmb2'),
+                    'Oswald'    => __('Oswald', 'cmb2'),
+                    'Montserrat'=> __('Montserrat', 'cmb2'),
+                )
+            ),
+            array(
+                'name' => esc_html__('Font size', 'cmb2'),
+                'id'   => 'font_size',
+                //'desc' => __('Enter PX value', 'spill-table'),
+                'after_field' => 'px',
+                'type' => 'text_small'
+            ),
+            array(
+                'name' => esc_html__('Color', 'cmb2'),
+                //'desc' => esc_html__( 'field description (optional)', 'cmb2' ),
+                'id'   => 'text_color',
+                'type' => 'colorpicker',
+            )
+        )
+    );
 
     /* Add fields Table Settings */
 
