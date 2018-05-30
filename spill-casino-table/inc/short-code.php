@@ -368,8 +368,7 @@ function STZ_spilltable_shortcode($atts)
                 $show_more_button = false;
 
                 if ($sm_rows) {
-                    $hide_rows = 'hide_rows';
-                    $display_button = '<tbody class="hide_show_rows" style="' . $sm_button_color . $sm_bg_color .  $sm_button_font . '"> <tr> <td colspan="4"> <button class="toggle_rows">'. $sm_more_text . '</button> </td> </tr> </tbody>';
+                    $hide_rows = 'hide_rows';                    
                 }
                 
                 /** COUNTER FOR DISPALY ROWS AND COUNTER */         
@@ -413,6 +412,7 @@ function STZ_spilltable_shortcode($atts)
                     </tr>
                 </tbody>
                 <?php 
+                $count_entries = 1;
                 foreach ($attached as $attached_post) 
                 {
                     $entry_post = get_post($attached_post);
@@ -874,6 +874,9 @@ function STZ_spilltable_shortcode($atts)
                         <?php                        
                         $count_entries++;
                     }
+                }
+                if ($sm_rows) {                    
+                    $display_button = '<tbody class="hide_show_rows" style="' . $sm_button_color . $sm_bg_color .  $sm_button_font . '"> <tr> <td colspan="'. count($table_rows) .'"> <button class="toggle_rows">'. $sm_more_text . '</button> </td> </tr> </tbody>';
                 }
                 echo ($show_more_button)?$display_button:''; 
                 ?>                                               
