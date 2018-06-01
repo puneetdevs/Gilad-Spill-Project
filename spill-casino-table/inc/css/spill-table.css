@@ -784,6 +784,38 @@ ul.review_rating li .fa {
     text-align: center;
 }
 
+.spill-table tr:before {
+    background-image: url(../img/ribbon.png);
+    float: left;
+    width: 50px;
+    font-size: 10px;
+    height: 61px;
+    background-size: 50px;
+    padding-top: 18px;
+    line-height: 11px;
+    font-weight: bold;
+    color: red;
+    position: absolute;
+    margin: 0;
+    content: "HOT";
+    float: left;
+    color: red;
+    font-size: 11px;
+    line-height: normal;
+    padding: 10px 0 0 0;
+    background-repeat: no-repeat;
+    text-align: center;
+    visibility: hidden;
+}
+
+.ribbon:before {
+    visibility: visible !important;
+}
+
+.ribbon {
+    position: relative;
+}
+
 @media ( max-width: 991px) {
     .spill-table table tr td,
     .spill-table table tr {

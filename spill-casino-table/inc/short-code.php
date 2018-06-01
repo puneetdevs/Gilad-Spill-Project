@@ -364,7 +364,7 @@ function STZ_spilltable_shortcode($atts)
     $table_cols = get_post_meta($table_id, 'rows_group', true);
     
     /** GET TABLE ROWS */
-    $attached = get_post_meta($atts['id'], 'table_attached_stz_entries', true);
+    $attached = get_post_meta($table_id, 'table_attached_stz_entries', true);
 
     if (is_array($table_cols) && !empty($table_cols)) {
         ?>
@@ -440,9 +440,7 @@ function STZ_spilltable_shortcode($atts)
                                         $col_style .='';
                                     }
                                 }
-
-                                echo '<th style="'.$col_style.'">'. $table_col['title'] . '</th>';
-                                
+                                echo '<th style="'.$col_style.'">'. $table_col['title'] . '</th>';                                
                             }   ?>
                         </tr>
                     </thead>
@@ -459,8 +457,8 @@ function STZ_spilltable_shortcode($atts)
                     if ($entry_post->post_status=='publish') {
                         $entry_meta = get_post_meta($entry_post->ID);
                         //echo '<pre>' ; print_r($entry_post);die();
-                        //echo '<pre>' ; print_r($entry_meta);echo'</pre>';
-                        //echo '<pre>' ; print_r(get_post_meta($entry_post->ID, 'icons', true)); echo'</pre>';
+                        //echo '<pre>' ; print_r($entry_meta);echo'</pre>';die();
+                        //echo '<pre>' ; print_r(get_post_meta($entry_post->ID, 'ribbon_settings', true)); echo'</pre>';die();
                         
                         $bounses = get_post_meta($entry_post->ID, 'bonus', true);
                         $texts   = get_post_meta($entry_post->ID, 'text', true);
@@ -499,36 +497,52 @@ function STZ_spilltable_shortcode($atts)
                         if ($secondary_button_link_target[0]=='on') {
                             $secondary_link_target = '_blank';
                         }
-                                                                
+                         
                         $additional_text = get_post_meta($entry_post->ID, 'additional_text', true);
                         if (trim($additional_text)=='') {
                             $additional_text='View More';
-                        } 
+                        }
+
+                        $show_ribbon = false;
+
+                        if (get_post_meta($entry_post->ID, 'ribbon_settings', true)) 
+                        {
+                            $ribbon_settings = get_post_meta($entry_post->ID, 'ribbon_settings', true);
+
+                            if ($ribbon_settings[0]['show_ribbon']=='on') 
+                            {
+                                $show_ribbon = true;
+                                $ribbon_text  = $ribbon_settings[0]['ribbon_text'] ? ' content:"' . $ribbon_settings[0]['ribbon_text'] . '";' : '';
+                                $ribbon_color = $ribbon_settings[0]['ribbon_color'] ? ' color:' . $ribbon_settings[0]['ribbon_color']. ';' : '';
+                                $ribbon_image = $ribbon_settings[0][ 'ribbon_image' ] ? ' background-image:url(' . $ribbon_settings[0][ 'ribbon_image' ] . ');' : '';
+                                echo '<style>tr#row_' . $entry_post->ID . '::before {' . $ribbon_image . $ribbon_color . $ribbon_text . ' }</style>';
+                            }                                    
+                        }
                         ?>                        
                         <tbody class="dropdown dropdown-processed <?php if ($count_entries>$sm_rows) { echo $hide_rows;  $show_more_button=true;  } ?>" style="">
-                            <tr class="tr-row" style="<?php echo $header_text_color . $header_font_family . $header_font_size . $header_bg_color; ?> <?php echo $content_shadow; ?>">
+                            <tr id="row_<?php echo $entry_post->ID;?>" class="tr-row <?php echo ($show_ribbon) ? ' ribbon':'' ; ?>" style="<?php echo $header_text_color . $header_font_family . $header_font_size . $header_bg_color; ?> <?php echo $content_shadow; ?>">
                                 <?php  
-                                $col_counter = 0;
-                                $table_rows = array();
-                                
+                                $col_counter = 1;
+                                $table_rows = array(); 
+								
                                 foreach ($table_cols as $table_col)
                                 {
                                     array_push($table_rows, $table_col['type']);
                                     
                                     if($table_col['type']=='numbers')
                                     { 	?>
-                                        <td width="" style="border-left:1px solid #f2f0f0"> 
-                                            <div class="left_col1">
-                                                <?php  if ($header_counter_or_image=='number') {
-                                                    echo '<div class="counter">'.$count_entries."</div>";
-                                                } else {
-                                                    if($os_count_image){
-                                                        echo $selected_image = wp_get_attachment_image( get_post_meta( $table_id, 'os_count_image_id', 1 ), array('50', '50'), "", array( "class" => 'counter_image' ) ); 
-                                                    }else{
-                                                        echo '<i class="fa fa-star"></i> ';
-                                                    }                                                    
-                                                } ?>
-                                            </div>
+                                        <td width="" style="border-left:1px solid #f2f0f0">
+                                            <?php                                            
+                                            if ($header_counter_or_image=='number') {
+                                                echo '<div class="counter">'.$count_entries."</div>";
+                                            } else {
+                                                if($os_count_image){
+                                                    echo $selected_image = wp_get_attachment_image( get_post_meta( $table_id, 'os_count_image_id', 1 ), array('50', '50'), "", array( "class" => 'counter_image' ) ); 
+                                                }else{
+                                                    echo '<i class="fa fa-star"></i> ';
+                                                }                                                    
+                                            } 
+											?>
                                         </td> <?php
                                     }
                                     else if($table_col['type']=='logo') 
@@ -660,7 +674,9 @@ function STZ_spilltable_shortcode($atts)
                                             <a href="#" class="more_button dropdown-link" style="<?php echo $btn_view_more_txt_color . $btn_view_more_color .$btn_view_more_font; ?>" ><?php echo $additional_text; ?> <i class="fa fa-plus"></i></a>
                                         </td> <?php
                                     }					
-                                } 	?>
+                                } 
+                                $col_counter++;
+                                ?>
                             </tr>
                             <?php /** TABLE ROWS - CONTENT SETTINGS */
 
@@ -756,8 +772,8 @@ function STZ_spilltable_shortcode($atts)
                                                         */ ?>
                                                         <?php if (get_post_meta($entry_post->ID, 'image', true)) : ?>
                                                             <div class="spill_screenshot">
-                                                                <?php $class = 'spill-table-screenshot '.$ss_display_type;  ?>
-                                                                <?php echo $image = wp_get_attachment_image( get_post_meta( $entry_post->ID, 'image_id', 1 ), 'medium', "", array( "class" => $class ) ); ?>
+                                                            <?php $class = 'spill-table-screenshot '.$ss_display_type;  ?>
+                                                            <?php echo $image = wp_get_attachment_image( get_post_meta( $entry_post->ID, 'image_id', 1 ), 'medium', "", array( "class" => $class ) ); ?>
                                                             </div>
                                                         <?php endif; ?>
                                                     </div>
@@ -775,8 +791,8 @@ function STZ_spilltable_shortcode($atts)
                                                                     }
                                                                     echo ' </div>';
                                                                 } ?>
-                                                                                                        <?php 
-                                                                                                            $post_stz_softwares = get_the_terms($entry_post->ID, 'stz_software');
+                                                                <?php 
+                                                                    $post_stz_softwares = get_the_terms($entry_post->ID, 'stz_software');
                                                                 if (is_array($post_stz_softwares)) {
                                                                     echo '<div class="wagering_size"> <p>Softwares</p>';
                                                                     foreach ($post_stz_softwares as $payment_method) {
@@ -785,8 +801,8 @@ function STZ_spilltable_shortcode($atts)
                                                                     }
                                                                     echo ' </div>';
                                                                 } ?>
-                                                                                                        <?php 
-                                                                                                            $post_stz_devices = get_the_terms($entry_post->ID, 'stz_devices');
+                                                            <?php 
+                                                                $post_stz_devices = get_the_terms($entry_post->ID, 'stz_devices');
                                                                 if (is_array($post_stz_devices)) {
                                                                     echo '<div class="wagering_size">  <p>Devices</p> ';
                                                                     foreach ($post_stz_devices as $payment_method) {

@@ -512,6 +512,7 @@ function table_register_meta_boxes()
         ),
         'preview_size' => 'thumbnail',
     );
+   
 
     $tabs_setting['tabs']['other_settings']['fields'][] = array(
         'name' => esc_html__('Border Color', 'cmb2'),

@@ -25,6 +25,41 @@ function prefix_register_meta_boxes() {
         'title'  => __( 'Images' ),
         'fields' => array(
             array(
+                'id'      => 'ribbon_settings',
+                'type'    => 'group',
+                'repeatable'  => false,
+                'options' => array(
+                    'group_title'   => __( 'Ribbon Settings' ),
+                    'sortable'      => false,
+                    'remove_button' => __( 'Remove group' ),
+                ),
+                'fields'  => array(
+                    array(
+                        'name' => __( 'Add Ribbon' ),
+                        'id'    => 'show_ribbon',                
+                        'type'  => 'checkbox',
+                        'desc'  => 'Check to show ribbon'
+                    ),
+                    array(
+                        'name' => __( 'Text' ),
+                        'id'   => 'ribbon_text',                
+                        'type' => 'text',
+                        'desc' => 'show text on image'
+                    ),
+                    array(
+                        'name' => __( 'Text Color' ),
+                        'id'   => 'ribbon_color',                
+                        'type' => 'colorpicker',
+                    ),
+                    array(
+                        'name' => __( 'Upload Custom Ribbon' ),
+                        'id'   => 'ribbon_image',                
+                        'type' => 'file',
+                        'desc' => 'If no image uploaded then default ribbon will show'
+                    )
+                )
+            ) ,
+            array(
                 'name'    => __( 'Logo image' ),
                 'description' => 'Upload logo with more than 100px width',
                 'id'      => 'logo',
