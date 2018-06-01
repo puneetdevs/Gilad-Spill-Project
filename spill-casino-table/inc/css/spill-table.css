@@ -672,8 +672,8 @@ ul.review_rating li .fa {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    line-height: 30px;
-    margin-top: 7px;
+    line-height: 28px;
+    margin-top: 0;
 }
 
 .hide_rows {
@@ -722,14 +722,9 @@ ul.review_rating li .fa {
     margin-top: 4px;
 }
 
-.user_rating_form_fields .form-control {
-    margin-bottom: 14px;
-    width: 100%;
-}
-
 .user_rating_form_fields {
     background: #fff;
-    padding: : 10px;
+    padding: 10px;
 }
 
 .user_rating_form_fields input {
@@ -741,6 +736,52 @@ ul.review_rating li .fa {
 .tr-head th {
     text-align: center;
     padding: 6px;
+}
+
+.spill_screenshot {
+    text-align: center;
+}
+
+.spill-table-screenshot {
+    margin: 8px;
+}
+
+.spill-table table tr td .spill-table-logo.circle {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 1px solid #CCC;
+}
+
+.spill-table-screenshot.circle {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    border-radius: 100%;
+    border: 1px solid #ccc;
+}
+
+.vote_col.vote_col1 {
+    width: 100px;
+    float: none;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.counter_image {
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.left_col1 {
+    float: none;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.spill-table table tr td {
+    text-align: center;
 }
 
 @media ( max-width: 991px) {
@@ -796,5 +837,40 @@ ul.review_rating li .fa {
     }
     .spill-table .submit_btn {
         margin-top: 10px;
+    }
+}
+
+@media (max-width:767px) {
+    .left_col1 {
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+        float: left;
+    }
+    .left_col1 .counter {
+        padding: 0;
+        background-color: #fff;
+        border: 1px solid #dedede;
+        border-radius: 5px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        line-height: 28px;
+        margin-top: 0;
+        margin: 0 auto;
+    }
+    .spill_logo {
+        float: none;
+    }
+    .vote_col.vote_col1 {
+        width: 100px;
+        float: none;
+        text-align: left;
+        margin-top: 6px;
+        margin: 0 auto;
+    }
+    .left_col1.vote_col3 {
+        width: 100%;
+        text-align: center;
     }
 }

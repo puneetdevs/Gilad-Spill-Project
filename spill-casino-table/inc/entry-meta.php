@@ -30,12 +30,12 @@ function prefix_register_meta_boxes() {
                 'id'      => 'logo',
                 'type'    => 'file',
 	            'column'  => true
-            ),
+            ),           
 	        array(
 		        'name'    => __( 'Screenshot' ),
 		        'id'      => 'image',
 		        'type'    => 'file'
-	        ),
+            )           
         )
     );
 

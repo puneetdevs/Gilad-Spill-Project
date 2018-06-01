@@ -148,7 +148,7 @@ function table_register_meta_boxes()
                 'name'      => __( 'Items' ),
                 'id'        => 'type',
                 'type'      => 'select',
-                'default'   => 'none',
+                'show_option_none' => true,
                 'options'   => stz_columns_list()
             ),
             array(
@@ -489,15 +489,16 @@ function table_register_meta_boxes()
     );
 
     $tabs_setting['tabs']['other_settings']['fields'][] = array(
-        'name' => esc_html__('Ribbon Image', 'cmb2'),
-        'id'   => $other_settings_prefix . 'ribbon_image',
+        'name' => esc_html__('Count Image', 'cmb2'),
+        'id'   => $other_settings_prefix . 'count_image',
         'type'    => 'file',
+        'desc' => 'If show count is image this image will appear',
         // Optional:
         'options' => array(
             'url' => false, // Hide the text input for the url
         ),
         'text'    => array(
-            'add_upload_file_text' => 'Add Ribbon'
+            'add_upload_file_text' => 'Add Image'
             // Change upload button text. Default: "Add or Upload File"
         ),
         'query_args' => array(
@@ -531,17 +532,27 @@ function table_register_meta_boxes()
         'type' => 'text_small',
     );
 
-    // $tabs_setting['tabs']['other_settings']['fields'][] = array(
-    //     'name' => esc_html__('Show Table Shadow', 'cmb2'),
-    //     'id'   => $content_prefix . 'show_table_shadow',
-    //     'type' => 'checkbox',
-    // );
+    $tabs_setting['tabs']['other_settings']['fields'][] = array(
+        'name'    => __( 'Display Logo Type' ),                
+        'id'      => 'display_logo',
+        'type'    => 'radio',
+        'default' => 'square',
+        'options' => array(
+            'square' => 'Square',
+            'circle' => 'Circle',
+        )
+    );
 
-    // $tabs_setting['tabs']['other_settings']['fields'][] = array(
-    //     'name' => esc_html__('Table Shadow', 'cmb2'),
-    //     'id'   => $content_prefix . 'table_shadow_color',
-    //     'type' => 'colorpicker',
-    // );
+    $tabs_setting['tabs']['other_settings']['fields'][] = array(
+        'name'    => __( 'Display Screenshot Type' ),                
+        'id'      => 'display_screenshot',
+        'type'    => 'radio',
+        'default' => 'square',
+        'options' => array(
+            'square' => 'Square',
+            'circle' => 'Circle',
+        )
+    );
 
     // set tabs
     $cmb->add_field(array(

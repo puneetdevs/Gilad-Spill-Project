@@ -3,14 +3,6 @@
  * Generate the shortcode
  * Shortcode : [spilltable id='X']
  */
-
-function get_rowData($col_type){
-	if($col_type=='numbers'){
-        
-    }
-}
-
-
 function STZ_spilltable_shortcode($atts)
 {
     ob_start();
@@ -18,10 +10,6 @@ function STZ_spilltable_shortcode($atts)
     $table_meta = get_post_meta($atts['id']);
     $table_id = $atts['id'];
 
-    $table_cols = get_post_meta($table_id, 'rows_group', true);
-    //echo '<pre>'; print_r($table_cols); echo '</pre>';
-    //die('0');
-    //echo '<pre>'; print_r($table_meta); echo '</pre>';
     /**
      * DECLEARE
      * ALL
@@ -33,8 +21,11 @@ function STZ_spilltable_shortcode($atts)
      * SETTINGS
      *
     **/
+
+    /** Hide Table Header */
+    $header_hide = '';
     
-    /** TABLE HEADER VARIABLES */
+    /** TABLE Visible Rows VARIABLES */
     $header_text_color = '';
     $header_font_family = '';
     $header_font_style = '';
@@ -43,7 +34,7 @@ function STZ_spilltable_shortcode($atts)
     $header_bg_hover_color = '';
     $head_bg_hover_color = '';
     
-    /** TABLE ROWS VARIABLES */
+    /** TABLE ROWS Dropdown Content VARIABLES */
     $content_text_color = '';
     $content_font_family = '';
     $content_font_style = '';
@@ -70,7 +61,7 @@ function STZ_spilltable_shortcode($atts)
     $sm_table_shadow_color = '';
 
     /** OTHER SETTINGS */
-    $os_ribbon_image = '';
+    $os_count_image = '';
     $os_border_color = '';
     $os_border_width = '';
     $os_gap_rows = '';
@@ -95,13 +86,32 @@ function STZ_spilltable_shortcode($atts)
     $btn_view_more_hover_color='';
     $btn_view_more_font='';
 
+
+    /**
+     * Logo and Screenshot type
+     */
+    $ss_display_type ='square';
+    $logo_display_type = 'square';
     /** Get the variable data */
+
+    /**
+     * Get Logo and Screenshot design
+     */
+    if (get_post_meta($table_id, 'display_logo', true)) {
+        $logo_display_type = get_post_meta($table_id, 'display_logo', true);                            
+    }
+    if (get_post_meta($table_id, 'display_screenshot', true)) {
+        $ss_display_type = get_post_meta($table_id, 'display_screenshot', true);                            
+    }
+    
+    /**
+     * ROW SETTINGS 
+     */
 
     if (get_post_meta($table_id, 'header_text_color', true)) {
         $header_text_color = get_post_meta($table_id, 'header_text_color', true);
         $header_text_color = ' color:'. $header_text_color .';' ;
     }
-
     if (get_post_meta($table_id, 'header_font_family', true)) {
         $header_font_family = get_post_meta($table_id, 'header_font_family', true);
     }
@@ -122,6 +132,9 @@ function STZ_spilltable_shortcode($atts)
         $head_bg_hover_color = ' background-color:'. $header_bg_hover_color .' !important;' ;
     }
 
+    /**
+     * DROP-DOWN CONTENT SETTINGS
+     */
 
     if (get_post_meta($table_id, 'content_text_color', true)) {
         $content_text_color = get_post_meta($table_id, 'content_text_color', true);
@@ -156,6 +169,14 @@ function STZ_spilltable_shortcode($atts)
     }
 
 
+    /** HIDE SHOW TABLE HEADER */
+    if (get_post_meta($table_id, 'header_hide', true)) {
+        $header_hide = get_post_meta($table_id, 'header_hide', true);
+    }
+
+    /**
+     * DISPLAY ROWS SETTINGS
+     */
     if (get_post_meta($table_id, 'sm_rows', true)) {
         $sm_rows = get_post_meta($table_id, 'sm_rows', true);
     }
@@ -193,9 +214,11 @@ function STZ_spilltable_shortcode($atts)
         $sm_table_shadow_color = get_post_meta($table_id, 'sm_table_shadow_color', true);
     }
 
-
-    if (get_post_meta($table_id, 'os_ribbon_image', true)) {
-        $os_ribbon_image = get_post_meta($table_id, 'os_ribbon_image', true);
+    /**
+     * DISPLAY IMAGE INSTEAD OF NUMBERS SETTINGS
+     */
+    if (get_post_meta($table_id, 'os_count_image', true)) {
+        $os_count_image = get_post_meta($table_id, 'os_count_image', true);
     }
     if (get_post_meta($table_id, 'os_border_color', true)) {
         $os_border_color = get_post_meta($table_id, 'os_border_color', true);
@@ -206,7 +229,8 @@ function STZ_spilltable_shortcode($atts)
     if (get_post_meta($table_id, 'os_gap_rows', true)) {
         $os_gap_rows = get_post_meta($table_id, 'os_gap_rows', true);
     }
-
+    
+    
     if ($header_font_family!='') {
         if ('Roboto'==$header_font_family) {
             $header_font_family = " font-family: 'Roboto', sans-serif;";
@@ -247,6 +271,10 @@ function STZ_spilltable_shortcode($atts)
         }
     }
 
+
+    /**
+     * BUTTON SETTINGS AND DESING
+     */
     
     if (get_post_meta($table_id, 'btn_primary_txt_color', true)) {
         $btn_primary_txt_color = get_post_meta($table_id, 'btn_primary_txt_color', true);
@@ -331,9 +359,14 @@ function STZ_spilltable_shortcode($atts)
         }
     }
 
+
+    /** GET TABLE COLUMNS */
+    $table_cols = get_post_meta($table_id, 'rows_group', true);
+    
+    /** GET TABLE ROWS */
     $attached = get_post_meta($atts['id'], 'table_attached_stz_entries', true);
 
-    if (is_array($attached)) {
+    if (is_array($table_cols) && !empty($table_cols)) {
         ?>
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
         <style>            
@@ -351,8 +384,6 @@ function STZ_spilltable_shortcode($atts)
         </style>
         <div class="spill-table" id="spill-table-<?php echo $table_id; ?>">
             <table cellspacing="0" cellpadding="0" style="<?php echo ' border-collapse: separate;border-spacing: 0 '.$os_gap_rows.'px;border: none;'  ?>">
-                <thead>                        
-                </thead>                
                 <?php 
                 $sm_more_text = (trim($sm_more_text)!='')?$sm_more_text:'Load More';
                 $sm_less_text = (trim($sm_less_text)!='')?$sm_less_text:'Load Less';
@@ -366,52 +397,60 @@ function STZ_spilltable_shortcode($atts)
                 $hide_rows = '';
                 $display_button='';
                 $show_more_button = false;
+                $hide_header = false;
 
                 if ($sm_rows) {
                     $hide_rows = 'hide_rows';                    
                 }
                 
-                /** COUNTER FOR DISPALY ROWS AND COUNTER */         
-                ?>
-                       
-                <tbody class="table_header" style="">
-                    <tr class="tr-head" style="<?php echo $header_text_color . $header_font_family . $header_font_size . $header_bg_color. $content_shadow; ?>">
-                        <?php  
-                        $col_counter = 0;
-                        
-                        foreach ($table_cols as $table_col) 
-                        {   
-                            $col_style ='';
-
-                            $table_col['title'] = ($table_col['hide']==on)? '':$table_col['title'];
-
-                            if(isset($col_font_family['font_family']))
-                            {
-                                if ('Roboto'==$col_font_family['font_family']) {
-                                    $col_style .= " font-family: 'Roboto', sans-serif;";
-                                } elseif ('Work+Sans'==$col_font_family['font_family']) {
-                                    $col_style .= " font-family: 'Work Sans', sans-serif;";
-                                } elseif ('PT+Sans'==$col_font_family['font_family']) {
-                                    $col_style .= " font-family: 'PT Sans', sans-serif;";
-                                } elseif ('Lato'==$col_font_family['font_family']) {
-                                    $col_style .= " font-family: 'Lato', sans-serif;";
-                                } elseif ('Open+Sans'==$col_font_family['font_family']) {
-                                    $col_style .= " font-family: 'Open Sans', sans-serif;";
-                                } elseif ('Oswald'==$col_font_family['font_family']) {
-                                    $col_style .= " font-family: 'Oswald', sans-serif;";
-                                } elseif ('Montserrat'==$col_font_family['font_family']) {
-                                    $col_style .= " font-family: 'Montserrat', sans-serif;";
-                                } else {
-                                    $col_style .='';
-                                }
-                            }
-
-                            echo '<th style="'.$col_style.'">'. $table_col['title'] . '</th>';
+                if ($header_hide==='on') {
+                    $hide_header = true;                    
+                }
+                
+                /** TABLE HEAD SETTINGS */
+                if (!$hide_header) {  ?>
+                    <thead class="table_header" style="">                    
+                        <tr class="tr-head" style="<?php echo $header_text_color . $header_font_family . $header_font_size . $header_bg_color. $content_shadow; ?>">
+                            <?php  
+                            $col_counter = 0;
                             
-                        }   ?>
-                    </tr>
-                </tbody>
-                <?php 
+                            foreach ($table_cols as $table_col) 
+                            {
+                                $col_style ='';
+
+                                $table_col['title'] = ($table_col['hide']==on)? '':$table_col['title'];
+
+                                if(isset($col_font_family['font_family']))
+                                {
+                                    if ('Roboto'==$col_font_family['font_family']) {
+                                        $col_style .= " font-family: 'Roboto', sans-serif;";
+                                    } elseif ('Work+Sans'==$col_font_family['font_family']) {
+                                        $col_style .= " font-family: 'Work Sans', sans-serif;";
+                                    } elseif ('PT+Sans'==$col_font_family['font_family']) {
+                                        $col_style .= " font-family: 'PT Sans', sans-serif;";
+                                    } elseif ('Lato'==$col_font_family['font_family']) {
+                                        $col_style .= " font-family: 'Lato', sans-serif;";
+                                    } elseif ('Open+Sans'==$col_font_family['font_family']) {
+                                        $col_style .= " font-family: 'Open Sans', sans-serif;";
+                                    } elseif ('Oswald'==$col_font_family['font_family']) {
+                                        $col_style .= " font-family: 'Oswald', sans-serif;";
+                                    } elseif ('Montserrat'==$col_font_family['font_family']) {
+                                        $col_style .= " font-family: 'Montserrat', sans-serif;";
+                                    } else {
+                                        $col_style .='';
+                                    }
+                                }
+
+                                echo '<th style="'.$col_style.'">'. $table_col['title'] . '</th>';
+                                
+                            }   ?>
+                        </tr>
+                    </thead>
+                    <?php
+                }
+
+                /** TABLE ROWS - HEADER SETTINGS */
+
                 $count_entries = 1;
                 foreach ($attached as $attached_post) 
                 {
@@ -464,12 +503,13 @@ function STZ_spilltable_shortcode($atts)
                         $additional_text = get_post_meta($entry_post->ID, 'additional_text', true);
                         if (trim($additional_text)=='') {
                             $additional_text='View More';
-                        } ?>
+                        } 
+                        ?>                        
                         <tbody class="dropdown dropdown-processed <?php if ($count_entries>$sm_rows) { echo $hide_rows;  $show_more_button=true;  } ?>" style="">
                             <tr class="tr-row" style="<?php echo $header_text_color . $header_font_family . $header_font_size . $header_bg_color; ?> <?php echo $content_shadow; ?>">
                                 <?php  
                                 $col_counter = 0;
-                                $table_rows =array();
+                                $table_rows = array();
                                 
                                 foreach ($table_cols as $table_col)
                                 {
@@ -482,7 +522,11 @@ function STZ_spilltable_shortcode($atts)
                                                 <?php  if ($header_counter_or_image=='number') {
                                                     echo '<div class="counter">'.$count_entries."</div>";
                                                 } else {
-                                                    echo '<i class="fa fa-star"></i> ';
+                                                    if($os_count_image){
+                                                        echo $selected_image = wp_get_attachment_image( get_post_meta( $table_id, 'os_count_image_id', 1 ), array('50', '50'), "", array( "class" => 'counter_image' ) ); 
+                                                    }else{
+                                                        echo '<i class="fa fa-star"></i> ';
+                                                    }                                                    
                                                 } ?>
                                             </div>
                                         </td> <?php
@@ -492,7 +536,7 @@ function STZ_spilltable_shortcode($atts)
                                         <td width="" style="border-left:1px solid #f2f0f0">
                                             <div class="spill_logo">
                                                 <?php if (get_post_meta($entry_post->ID, 'logo', true)) : ?>
-                                                <img class="spill-table-logo" src="<?php echo get_post_meta($entry_post->ID, 'logo', true); ?>">
+                                                <img class="spill-table-logo <?php echo $logo_display_type; ?>" src="<?php echo get_post_meta($entry_post->ID, 'logo', true); ?>">
                                                 <?php endif; ?>
                                             </div>
                                         </td> <?php
@@ -609,7 +653,8 @@ function STZ_spilltable_shortcode($atts)
                                         </td> <?php 
                                     }
                                     else if($table_col['type']=='button') 
-                                    { 	?>
+                                    { 	
+                                        ?>
                                         <td width="" style="border-left:1px solid #f2f0f0">
                                             <a href="<?php echo $primary_button_link; ?>" class="claim_button primary_btn" target="<?php echo $primary_link_target; ?>" style="<?php echo $btn_primary_txt_color . $btn_primary_color .$btn_primary_font; ?>"> <?php echo $primary_button_text; ?> </a>
                                             <a href="#" class="more_button dropdown-link" style="<?php echo $btn_view_more_txt_color . $btn_view_more_color .$btn_view_more_font; ?>" ><?php echo $additional_text; ?> <i class="fa fa-plus"></i></a>
@@ -617,7 +662,10 @@ function STZ_spilltable_shortcode($atts)
                                     }					
                                 } 	?>
                             </tr>
-                            <?php if(in_array("button", $table_rows) ) { ?>
+                            <?php /** TABLE ROWS - CONTENT SETTINGS */
+
+                            if(in_array("button", $table_rows) ) 
+                            {   ?>
                                 <tr class="dropdown-container" style="<?php echo $content_text_color . $content_font_family . $content_font_style. $content_font_size ; ?> display: none; ">
                                     <td colspan="<?php echo count($table_rows) ?>">
                                         <table class="row-table" cellpadding="0" cellspacing="0" >
@@ -706,6 +754,12 @@ function STZ_spilltable_shortcode($atts)
                                                                 echo "</ul>";
                                                             }
                                                         */ ?>
+                                                        <?php if (get_post_meta($entry_post->ID, 'image', true)) : ?>
+                                                            <div class="spill_screenshot">
+                                                                <?php $class = 'spill-table-screenshot '.$ss_display_type;  ?>
+                                                                <?php echo $image = wp_get_attachment_image( get_post_meta( $entry_post->ID, 'image_id', 1 ), 'medium', "", array( "class" => $class ) ); ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </td>
                                                 <td width="50%">
@@ -871,7 +925,8 @@ function STZ_spilltable_shortcode($atts)
                                 </tr>
                             <?php } ?>
                         </tbody>                            
-                        <?php                        
+                        <?php
+
                         $count_entries++;
                     }
                 }
@@ -920,6 +975,9 @@ function STZ_spilltable_shortcode($atts)
             });
         </script>
         <?php
+    }
+    else{
+        echo '<div class="no-table">No Table Data Found</div>';
     }
     return ob_get_clean();
 }
