@@ -274,8 +274,7 @@ body .sub_table_top h5 {
 
 .wagering_size>img {
     padding-right: 2px;
-    width: 80px;
-    height: 50px;
+    margin:0 10px;
 }
 
 .spill-table table tr td table td {
@@ -797,7 +796,7 @@ ul.review_rating li .fa {
     color: red;
     position: absolute;
     margin: 0;
-    content: "HOT";
+    content: "";
     float: left;
     color: red;
     font-size: 11px;
@@ -806,11 +805,13 @@ ul.review_rating li .fa {
     background-repeat: no-repeat;
     text-align: center;
     visibility: hidden;
+
 }
 
 .ribbon:before {
     visibility: visible !important;
 }
+
 
 .ribbon {
     position: relative;
@@ -905,4 +906,11 @@ ul.review_rating li .fa {
         width: 100%;
         text-align: center;
     }
+}
+.counter {
+	border-radius: 100%;
+	display: inline-block;
+}
+.shadow_btn{
+    box-shadow: 3px 5px 10px rgba(0,0,0,0.4);
 }

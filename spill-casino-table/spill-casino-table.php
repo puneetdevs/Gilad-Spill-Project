@@ -12,7 +12,7 @@ define( 'STZ_DIR', dirname( __FILE__ ) );
 define( 'STZ_DIR_URL', plugin_dir_url( __FILE__ ) );
 
 
-if ( !class_exists( 'CMB2_Bootstrap_230', false ) ) {
+if ( ! class_exists( 'CMB2_Bootstrap_230', false ) ) {
 
 // Include vendor CMB2 plugin for custom fields
 
@@ -39,4 +39,3 @@ add_action('wp_enqueue_scripts', 'add_spilltable_styles');
 function add_spilltable_styles() {
     wp_enqueue_style('spill-table-data', STZ_DIR_URL . 'inc/css/spill-table.css', array(), '1.0.0');
 }
-

@@ -60,9 +60,17 @@ function STZ_spilltable_shortcode($atts)
     $sm_show_table_shadow = '';
     $sm_table_shadow_color = '';
 
+    $sm_button_border_color = '';
+    $sm_button_border_size = '';
+    $sm_button_shadow_color = '';
+
     /** OTHER SETTINGS */
     $os_count_image = '';
     $os_border_color = '';
+    $os_background_color = '';
+    $os_text_color = '';
+    $os_padding = '';
+    $os_margin = '';
     $os_border_width = '';
     $os_gap_rows = '';
     
@@ -73,19 +81,27 @@ function STZ_spilltable_shortcode($atts)
     $btn_primary_color='';
     $btn_primary_hover_color='';
     $btn_primary_font='';
-    
+    $btn_primary_border='';
+    $btn_primary_border_color='';
+    $btn_primary_shadow='';
+
     $btn_secondary_txt_color='';
     $btn_secondary_hover_txt_color='';
     $btn_secondary_color='';
     $btn_secondary_hover_color='';
     $btn_secondary_font='';
-    
+    $btn_secondary_border='';
+    $btn_secondary_border_color='';
+    $btn_secondary_shadow='';
+
     $btn_view_more_txt_color='';
     $btn_view_more_hover_txt_color='';
     $btn_view_more_color='';
     $btn_view_more_hover_color='';
     $btn_view_more_font='';
-
+    $btn_view_more_border='';
+    $btn_view_more_border_color='';
+    $btn_view_more_shadow='';
 
     /**
      * Logo and Screenshot type
@@ -117,7 +133,12 @@ function STZ_spilltable_shortcode($atts)
     }
     if (get_post_meta($table_id, 'header_font_style', true)) {
         $header_font_style = get_post_meta($table_id, 'header_font_style', true);
-        $header_font_style = ' font-style:'. $header_font_style .';' ;
+        
+        if ($header_font_style=='bold') {
+            $header_font_style = ' font-weight:'. $header_font_style .';' ;
+        }else{
+            $header_font_style = ' font-style:'. $header_font_style .';' ;
+        } 
     }
     if (get_post_meta($table_id, 'header_font_size', true)) {
         $header_font_size = get_post_meta($table_id, 'header_font_size', true);
@@ -145,7 +166,11 @@ function STZ_spilltable_shortcode($atts)
     }
     if (get_post_meta($table_id, 'content_font_style', true)) {
         $content_font_style = get_post_meta($table_id, 'content_font_style', true);
-        $content_font_style = ' font-style:'. $content_font_style .';' ;
+        if ($content_font_style=='bold') {
+            $content_font_style = ' font-weight:'. $content_font_style .';' ;
+        } else{
+            $content_font_style = ' font-style:'. $content_font_style .';' ;
+        } 
     }
     if (get_post_meta($table_id, 'content_font_size', true)) {
         $content_font_size = get_post_meta($table_id, 'content_font_size', true);
@@ -213,6 +238,18 @@ function STZ_spilltable_shortcode($atts)
     if (get_post_meta($table_id, 'sm_table_shadow_color', true)) {
         $sm_table_shadow_color = get_post_meta($table_id, 'sm_table_shadow_color', true);
     }
+    if (get_post_meta($table_id, 'sm_button_border_size', true)) {
+        $sm_button_border_size = get_post_meta($table_id, 'sm_button_border_size', true);
+        $sm_button_border_size = ' border:'. $sm_button_border_color.'px solid;' ;
+    }
+    if (get_post_meta($table_id, 'sm_button_border_color', true)) {
+        $sm_button_border_color = get_post_meta($table_id, 'sm_button_border_color', true);
+        $sm_button_border_color = ' border-color:'. $sm_button_border_color.';' ;
+    }
+    if (get_post_meta($table_id, 'sm_button_shadow_color', true)) {
+        $sm_button_shadow_color = get_post_meta($table_id, 'sm_button_shadow_color', true);
+        $sm_button_shadow_color = ' box-shadow:3px 5px 10px'. $sm_button_shadow_color.';';
+    }
 
     /**
      * DISPLAY IMAGE INSTEAD OF NUMBERS SETTINGS
@@ -222,6 +259,18 @@ function STZ_spilltable_shortcode($atts)
     }
     if (get_post_meta($table_id, 'os_border_color', true)) {
         $os_border_color = get_post_meta($table_id, 'os_border_color', true);
+    }
+    if (get_post_meta($table_id, 'os_background_color', true)) {
+        $os_background_color = get_post_meta($table_id, 'os_background_color', true);
+    }
+    if (get_post_meta($table_id, 'os_text_color', true)) {
+        $os_text_color = get_post_meta($table_id, 'os_text_color', true);
+    }
+    if (get_post_meta($table_id, 'os_padding', true)) {
+        $os_padding = get_post_meta($table_id, 'os_padding', true);
+    }
+    if (get_post_meta($table_id, 'os_margin', true)) {
+        $os_margin = get_post_meta($table_id, 'os_margin', true);
     }
     if (get_post_meta($table_id, 'os_border_width', true)) {
         $os_border_width = get_post_meta($table_id, 'os_border_width', true);
@@ -300,6 +349,26 @@ function STZ_spilltable_shortcode($atts)
         $btn_primary_font = get_post_meta($table_id, 'btn_primary_font', true);
         $btn_primary_font = ' font-size:'. $btn_primary_font .'px;' ;
     }
+
+    if (get_post_meta($table_id, 'btn_view_more_border', true)) {
+        $btn_view_more_border = get_post_meta($table_id, 'btn_view_more_border', true);
+        $btn_view_more_border = ' font-size:'. $btn_view_more_border .'px;' ;
+    }
+
+    if (get_post_meta($table_id, 'btn_primary_border', true)) {
+        $btn_primary_border = get_post_meta($table_id, 'btn_primary_border', true);
+        $btn_primary_border = ' border:'. $btn_primary_border .'px solid;' ;
+    }
+
+    if (get_post_meta($table_id, 'btn_primary_border_color', true)) {
+        $btn_primary_border_color = get_post_meta($table_id, 'btn_primary_border_color', true);
+        $btn_primary_border_color = ' border-color:'. $btn_primary_border_color .';' ;
+    }
+
+    if (get_post_meta($table_id, 'btn_primary_shadow', true)) {
+        $btn_primary_shadow = get_post_meta($table_id, 'btn_primary_shadow', true);
+        $btn_primary_shadow ="shadow_btn";
+    }
     
     if (get_post_meta($table_id, 'btn_secondary_txt_color', true)) {
         $btn_secondary_txt_color = get_post_meta($table_id, 'btn_secondary_txt_color', true);
@@ -325,6 +394,18 @@ function STZ_spilltable_shortcode($atts)
         $btn_secondary_font = get_post_meta($table_id, 'btn_secondary_font', true);
         $btn_secondary_font = ' font-size:'. $btn_secondary_font .'px;' ;
     }
+    if (get_post_meta($table_id, 'btn_secondary_border', true)) {
+        $btn_secondary_border = get_post_meta($table_id, 'btn_secondary_border', true);
+        $btn_secondary_border = ' border:'. $btn_secondary_border .'px solid;' ;
+    }
+    if (get_post_meta($table_id, 'btn_secondary_border_color', true)) {
+        $btn_secondary_border_color = get_post_meta($table_id, 'btn_secondary_border_color', true);
+        $btn_secondary_border_color = ' border-color:'. $btn_secondary_border_color .';' ;
+    }
+    if (get_post_meta($table_id, 'btn_secondary_shadow', true)) {
+        $btn_secondary_shadow = get_post_meta($table_id, 'btn_secondary_shadow', true);
+        $btn_secondary_shadow ="shadow_btn";
+    }
         
     if (get_post_meta($table_id, 'btn_view_more_txt_color', true)) {
         $btn_view_more_txt_color = get_post_meta($table_id, 'btn_view_more_txt_color', true);
@@ -346,9 +427,25 @@ function STZ_spilltable_shortcode($atts)
         $btn_view_more_hover_color = ' background-color:'. $btn_view_more_hover_color .' !important;' ;
     }
 
+    if (get_post_meta($table_id, 'btn_view_more_border', true)) {
+        $btn_view_more_border = get_post_meta($table_id, 'btn_view_more_border', true);
+        $btn_view_more_border = ' font-size:'. $btn_view_more_border .'px;' ;
+    }
     if (get_post_meta($table_id, 'btn_view_more_font', true)) {
         $btn_view_more_font = get_post_meta($table_id, 'btn_view_more_font', true);
         $btn_view_more_font = ' font-size:'. $btn_view_more_font .'px;' ;
+    }
+    if (get_post_meta($table_id, 'btn_view_more_border', true)) {
+        $btn_view_more_border = get_post_meta($table_id, 'btn_view_more_border', true);
+        $btn_view_more_border = ' border:'. $btn_view_more_border .'px solid;' ;
+    }
+    if (get_post_meta($table_id, 'btn_view_more_border_color', true)) {
+        $btn_view_more_border_color = get_post_meta($table_id, 'btn_view_more_border_color', true);
+        $btn_view_more_border_color = ' border-color:'. $btn_view_more_border_color .';' ;
+    }
+    if (get_post_meta($table_id, 'btn_view_more_shadow', true)) {
+        $btn_view_more_shadow = get_post_meta($table_id, 'btn_view_more_shadow', true);
+        $btn_view_more_shadow ="shadow_btn";
     }
 
     if ($content_show_row_shadow=='on') {
@@ -420,27 +517,34 @@ function STZ_spilltable_shortcode($atts)
 
                                 $table_col['title'] = ($table_col['hide']==on)? '':$table_col['title'];
 
-                                if(isset($col_font_family['font_family']))
+                                if(isset($table_col['font_family']))
                                 {
-                                    if ('Roboto'==$col_font_family['font_family']) {
+                                    if ('Roboto'==$table_col['font_family']) {
                                         $col_style .= " font-family: 'Roboto', sans-serif;";
-                                    } elseif ('Work+Sans'==$col_font_family['font_family']) {
+                                    } elseif ('Work+Sans'==$table_col['font_family']) {
                                         $col_style .= " font-family: 'Work Sans', sans-serif;";
-                                    } elseif ('PT+Sans'==$col_font_family['font_family']) {
+                                    } elseif ('PT+Sans'==$table_col['font_family']) {
                                         $col_style .= " font-family: 'PT Sans', sans-serif;";
-                                    } elseif ('Lato'==$col_font_family['font_family']) {
+                                    } elseif ('Lato'==$table_col['font_family']) {
                                         $col_style .= " font-family: 'Lato', sans-serif;";
-                                    } elseif ('Open+Sans'==$col_font_family['font_family']) {
+                                    } elseif ('Open+Sans'==$table_col['font_family']) {
                                         $col_style .= " font-family: 'Open Sans', sans-serif;";
-                                    } elseif ('Oswald'==$col_font_family['font_family']) {
+                                    } elseif ('Oswald'==$table_col['font_family']) {
                                         $col_style .= " font-family: 'Oswald', sans-serif;";
-                                    } elseif ('Montserrat'==$col_font_family['font_family']) {
+                                    } elseif ('Montserrat'==$table_col['font_family']) {
                                         $col_style .= " font-family: 'Montserrat', sans-serif;";
                                     } else {
                                         $col_style .='';
                                     }
                                 }
-                                echo '<th style="'.$col_style.'">'. $table_col['title'] . '</th>';                                
+                                
+                                if(isset($table_col['font_size']) && $table_col['font_size'] != ""){
+                                   $col_font ="font-size: ".$table_col['font_size']."px;";
+                                }
+                                if(isset($table_col['text_color']) && $table_col['text_color'] != ""){
+                                   $font_color ="color: ".$table_col['text_color'].";";
+                                 }
+                                echo '<th style="'.$col_style.' '.$col_font.' '.$font_color.'">'. $table_col['title'] . '</th>';                               
                             }   ?>
                         </tr>
                     </thead>
@@ -532,9 +636,28 @@ function STZ_spilltable_shortcode($atts)
                                     if($table_col['type']=='numbers')
                                     { 	?>
                                         <td width="" style="border-left:1px solid #f2f0f0">
-                                            <?php                                            
+                                            <?php
+                                            
+                                            if(isset($os_border_width) && $os_border_width!=""){
+                                                $style_counter="border:".$os_border_width."px solid;";
+                                            }        
+                                            if(isset($os_border_color) && $os_border_color!=""){
+                                                $style_counter.="border-color:".$os_border_color.";";
+                                            } 
+                                            if(isset($os_background_color) && $os_background_color!=""){
+                                                $style_counter.="background:".$os_background_color.";";
+                                            }   
+                                            if(isset($os_text_color) && $os_text_color!=""){
+                                                $style_counter.="color:".$os_text_color.";";
+                                            }   
+                                            if(isset($os_padding) && $os_padding!=""){
+                                                $style_counter.="padding:".$os_padding.";";
+                                            }   
+                                            if(isset($os_margin) && $os_margin!=""){
+                                                $style_counter.="margin:".$os_margin.";";
+                                            }                                         
                                             if ($header_counter_or_image=='number') {
-                                                echo '<div class="counter">'.$count_entries."</div>";
+                                                echo '<div class="counter" style="'.$style_counter.'">'.$count_entries."</div>";
                                             } else {
                                                 if($os_count_image){
                                                     echo $selected_image = wp_get_attachment_image( get_post_meta( $table_id, 'os_count_image_id', 1 ), array('50', '50'), "", array( "class" => 'counter_image' ) ); 
@@ -670,8 +793,8 @@ function STZ_spilltable_shortcode($atts)
                                     { 	
                                         ?>
                                         <td width="" style="border-left:1px solid #f2f0f0">
-                                            <a href="<?php echo $primary_button_link; ?>" class="claim_button primary_btn" target="<?php echo $primary_link_target; ?>" style="<?php echo $btn_primary_txt_color . $btn_primary_color .$btn_primary_font; ?>"> <?php echo $primary_button_text; ?> </a>
-                                            <a href="#" class="more_button dropdown-link" style="<?php echo $btn_view_more_txt_color . $btn_view_more_color .$btn_view_more_font; ?>" ><?php echo $additional_text; ?> <i class="fa fa-plus"></i></a>
+                                            <a href="<?php echo $primary_button_link; ?>" class="claim_button primary_btn <?php echo $btn_primary_shadow; ?>" target="<?php echo $primary_link_target; ?>" style="<?php echo $btn_primary_txt_color . $btn_primary_color .$btn_primary_font.$btn_primary_border.$btn_primary_border_color; ?>"> <?php echo $primary_button_text; ?> </a>
+                                            <a href="#" class="more_button dropdown-link <?php echo $btn_view_more_shadow; ?>" style="<?php echo $btn_view_more_txt_color . $btn_view_more_color .$btn_view_more_font .  $btn_view_more_border_color. $btn_view_more_border; ?>" ><?php echo $additional_text; ?> <i class="fa fa-plus"></i></a>
                                         </td> <?php
                                     }					
                                 } 
@@ -723,7 +846,7 @@ function STZ_spilltable_shortcode($atts)
                                                             foreach ($texts as $text) {
                                                                 echo '<div class="text_row">
                                                                     <div class="text_title">'.$text['title'].' </div> 
-                                                                    <div class="text_details">'.$text['text_content'].' </div>
+                                                                    <div class="text_details" style="'.$content_font_style.'">'.$text['text_content'].' </div>
                                                                     <div class="text_highlight">'.$text['text_highlight'].'</div>
                                                                 </div>';
                                                             }
@@ -845,7 +968,7 @@ function STZ_spilltable_shortcode($atts)
                                                             } ?>
                                                         </div>
                                                         <center>
-                                                        <a href="<?php echo $secondary_button_link; ?>" class="claim_button secondary_btn"   target="<?php echo $secondary_link_target; ?>" style="<?php echo $btn_secondary_txt_color . $btn_secondary_color .$btn_secondary_font; ?>"><?php echo $secondary_button_text; ?> <i class="fa fa-gift"></i></a>
+                                                        <a href="<?php echo $secondary_button_link; ?>" class="claim_button secondary_btn <?php echo $btn_secondary_shadow; ?>"   target="<?php echo $secondary_link_target; ?>" style="<?php echo $btn_secondary_txt_color . $btn_secondary_color .$btn_secondary_font . $btn_secondary_border . $btn_secondary_border_color; ?>"><?php echo $secondary_button_text; ?> <i class="fa fa-gift"></i></a>
                                                             <div class="w100p pull-left clearfix"></div>
                                                             <?php if (get_post_meta($entry_post->ID, 'bool_rating', true)==='on') { ?>
                                                                 <div class="stars">
@@ -947,7 +1070,7 @@ function STZ_spilltable_shortcode($atts)
                     }
                 }
                 if ($sm_rows) {                    
-                    $display_button = '<tbody class="hide_show_rows" style="' . $sm_button_color . $sm_bg_color .  $sm_button_font . '"> <tr> <td colspan="'. count($table_rows) .'"> <button class="toggle_rows">'. $sm_more_text . '</button> </td> </tr> </tbody>';
+                    $display_button = '<tbody class="hide_show_rows" style="' . $sm_button_color . $sm_bg_color .  $sm_button_font . '"> <tr> <td colspan="'. count($table_rows) .'"> <button class="toggle_rows" style="' . $sm_button_border_size . $sm_button_border_color.$sm_button_shadow_color. '">'. $sm_more_text . '</button> </td> </tr> </tbody>';
                 }
                 echo ($show_more_button)?$display_button:''; 
                 ?>                                               

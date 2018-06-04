@@ -30,7 +30,6 @@ function STZ_table_meta()
         ));
     }
 }
-
 /**
  * Adding Fields to Spill-Table
  */
@@ -127,25 +126,25 @@ function table_register_meta_boxes()
         'title'   => 'Columns',
         'type'    => 'group',
         'options' => array(
-            'group_title'   => __( 'Table Column {#}' ),
-            'add_button'    => __( 'Add' ),
-            'remove_button' => __( 'Remove' ),
+            'group_title'   => __('Table Column {#}'),
+            'add_button'    => __('Add'),
+            'remove_button' => __('Remove'),
             'sortable'      => false
         ),
         'fields'  => array(
             array(
-                'name' => __( 'Column title' ),
+                'name' => __('Column title'),
                 'id'   => 'title',
                 'type' => 'text'
             ),
             array(
-                'name'      => __( 'Hide Header' ),
+                'name'      => __('Hide Header'),
                 'id'        => 'hide',
                 'type'      => 'checkbox',
-                'desc'   => 'check to hide form table',                
+                'desc'   => 'check to hide form table',
             ),
             array(
-                'name'      => __( 'Items' ),
+                'name'      => __('Items'),
                 'id'        => 'type',
                 'type'      => 'select',
                 'show_option_none' => true,
@@ -355,6 +354,23 @@ function table_register_meta_boxes()
         'id'   => $btn_prefix . 'primary_font',
         'type' => 'text_small',
     );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('Primary button Border size', 'cmb2'),
+        'id'   => $btn_prefix . 'primary_border',
+        'after_field' => 'px',
+        'type' => 'text_small',
+    );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('Primary button Border color', 'cmb2'),
+        'id'   => $btn_prefix . 'primary_border_color',
+        'type' => 'colorpicker',
+    );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('Primary button Shadow', 'cmb2'),
+        'id'   => $btn_prefix . 'primary_shadow',
+        'type' => 'checkbox',
+        'desc' => 'Check to show shadow',
+    );
 
     $tabs_setting['tabs']['button_settings']['fields'][] = array(
         'name' => esc_html__('Secondary Button Text Color', 'cmb2'),
@@ -385,6 +401,23 @@ function table_register_meta_boxes()
         'id'   => $btn_prefix . 'secondary_font',
         'type' => 'text_small',
     );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('Secondary button Border size', 'cmb2'),
+        'id'   => $btn_prefix . 'secondary_border',
+        'after_field' => 'px',
+        'type' => 'text_small',
+    );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('Secondary button Border color', 'cmb2'),
+        'id'   => $btn_prefix . 'secondary_border_color',
+        'type' => 'colorpicker',
+    );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('Secondary button Shadow', 'cmb2'),
+        'id'   => $btn_prefix . 'secondary_shadow',
+        'type' => 'checkbox',
+        'desc' => 'Check to show shadow',
+    ); 
 
     $tabs_setting['tabs']['button_settings']['fields'][] = array(
         'name' => esc_html__('View More Button Text Color', 'cmb2'),
@@ -409,12 +442,28 @@ function table_register_meta_boxes()
         'id'   => $btn_prefix . 'view_more_hover_color',
         'type' => 'colorpicker',
     );
-
     $tabs_setting['tabs']['button_settings']['fields'][] = array(
         'name' => esc_html__('View More button font size', 'cmb2'),
         'id'   => $btn_prefix . 'view_more_font',
         'type' => 'text_small',
     );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('View More  button Border size', 'cmb2'),
+        'id'   => $btn_prefix . 'view_more_border',
+        'after_field' => 'px',
+        'type' => 'text_small',
+    );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('View More  button Border color', 'cmb2'),
+        'id'   => $btn_prefix . 'view_more_border_color',
+        'type' => 'colorpicker',
+    );
+    $tabs_setting['tabs']['button_settings']['fields'][] = array(
+        'name' => esc_html__('View More  button Shadow', 'cmb2'),
+        'id'   => $btn_prefix . 'view_more_shadow',
+        'type' => 'checkbox',
+        'desc' => 'Check to show shadow',
+    ); 
 
     /* Add Show More Settings */
 
@@ -468,6 +517,21 @@ function table_register_meta_boxes()
         'id'   => $content_prefix . 'button_font',
         'type' => 'text_small',
     );
+    $tabs_setting['tabs']['show_more_settings']['fields'][] = array(
+        'name' => esc_html__('Button border color', 'cmb2'),
+        'id'   => $content_prefix . 'button_border_color',
+        'type' => 'colorpicker',
+    );
+    $tabs_setting['tabs']['show_more_settings']['fields'][] = array(
+        'name' => esc_html__('Button border size', 'cmb2'),
+        'id'   => $content_prefix . 'button_border_size',
+        'type' => 'text_small',
+    );
+    $tabs_setting['tabs']['show_more_settings']['fields'][] = array(
+        'name' => esc_html__('Button shadow color', 'cmb2'),
+        'id'   => $content_prefix . 'button_shadow_color',
+        'type' => 'colorpicker',
+    );
 
     
 
@@ -512,12 +576,34 @@ function table_register_meta_boxes()
         ),
         'preview_size' => 'thumbnail',
     );
-   
 
     $tabs_setting['tabs']['other_settings']['fields'][] = array(
-        'name' => esc_html__('Border Color', 'cmb2'),
+        'name' => esc_html__('Number Border Color', 'cmb2'),
         'id'   => $other_settings_prefix . 'border_color',
         'type' => 'colorpicker',
+    );
+
+    $tabs_setting['tabs']['other_settings']['fields'][] = array(
+        'name' => esc_html__('Number Background Color', 'cmb2'),
+        'id'   => $other_settings_prefix . 'background_color',
+        'type' => 'colorpicker',
+    );
+    $tabs_setting['tabs']['other_settings']['fields'][] = array(
+        'name' => esc_html__('Number Text Color', 'cmb2'),
+        'id'   => $other_settings_prefix . 'text_color',
+        'type' => 'colorpicker',
+    );
+    $tabs_setting['tabs']['other_settings']['fields'][] = array(
+        'name' => esc_html__('Padding', 'cmb2'),
+        'id'   => $other_settings_prefix . 'padding',
+        'desc' => 'Eg: Xpx Xpx Xpx Xpx, where X= number',
+        'type' => 'text',
+    );
+    $tabs_setting['tabs']['other_settings']['fields'][] = array(
+        'name' => esc_html__('Margin', 'cmb2'),
+        'id'   => $other_settings_prefix . 'margin',
+        'desc' => 'Eg: Xpx Xpx Xpx Xpx, where X= number',
+        'type' => 'text',
     );
     
     $tabs_setting['tabs']['other_settings']['fields'][] = array(
@@ -534,10 +620,10 @@ function table_register_meta_boxes()
     );
 
     $tabs_setting['tabs']['other_settings']['fields'][] = array(
-        'name'    => __( 'Display Logo Type' ),                
+        'name'    => __('Display Logo Type'),
         'id'      => 'display_logo',
-        'type'    => 'radio',
-        'default' => 'square',
+        'type'      => 'select',
+        'show_option_none' => true,
         'options' => array(
             'square' => 'Square',
             'circle' => 'Circle',
@@ -545,10 +631,10 @@ function table_register_meta_boxes()
     );
 
     $tabs_setting['tabs']['other_settings']['fields'][] = array(
-        'name'    => __( 'Display Screenshot Type' ),                
+        'name'    => __('Display Screenshot Type'),
         'id'      => 'display_screenshot',
-        'type'    => 'radio',
-        'default' => 'square',
+        'type'      => 'select',
+        'show_option_none' => true,
         'options' => array(
             'square' => 'Square',
             'circle' => 'Circle',
